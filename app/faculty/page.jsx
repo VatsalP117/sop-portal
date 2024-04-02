@@ -23,7 +23,7 @@ import {
 
 export default function Faculty() {
   return (
-    <div className="container flex h-[100vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
+    <div className="container flex h-[90vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
       <div className="student-data-section basis-1/4  flex flex-col gap-10">
         <Card className="student-card flex flex-row items-center justify-center">
           <Avatar className="ml-6">

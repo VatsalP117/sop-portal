@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ModeToggle from "@/components/mode-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import Comp from "@/components/test/comp";
 import {
   Table,
   TableBody,
@@ -23,7 +24,7 @@ import {
 
 export default function Student() {
   return (
-    <div className="container flex h-[100vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
+    <div className="container flex h-[90vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
       <div className="student-data-section basis-1/4  flex flex-col gap-10">
         <Card className="student-card flex flex-row items-center justify-center">
           <Avatar className="ml-6">
@@ -70,8 +71,8 @@ export default function Student() {
         </Card>
       </div>
       <div className="projects-section basis-3/4 ">
-        {/* <ModeToggle /> */}
-        <Table>
+        <Comp />
+        {/* <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[40px]">S.No.</TableHead>
@@ -114,7 +115,7 @@ export default function Student() {
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </Table> */}
       </div>
     </div>
   );

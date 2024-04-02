@@ -42,16 +42,19 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
+
   //data = []
   return (
     <div className="flex flex-col">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Search Projects..."
+          value={
+            (table.getColumn("project_name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) => {
             console.log(event.target.value);
-            table.getColumn("email")?.setFilterValue(event.target.value);
+            table.getColumn("project_name")?.setFilterValue(event.target.value);
           }}
           className="max-w-sm"
         />
