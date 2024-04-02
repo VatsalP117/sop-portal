@@ -37,9 +37,11 @@ export default function LoginPage() {
             Enter your email to sign in to your account
           </p> */}
           </div>
-          <Button className="flex flex-row justify-center items-center">
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-            Sign in with Github
+          <Button asChild className="flex flex-row justify-center items-center">
+            <Link href="/student">
+              <Icons.gitHub className="mr-2 h-4 w-4" />
+              Sign in with Github
+            </Link>
           </Button>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
