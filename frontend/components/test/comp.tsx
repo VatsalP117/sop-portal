@@ -85,7 +85,7 @@ function filterData(
     return;
   }
   let i = 0;
-  const newData = ogData.filter((pro) => {
+  const newData = ogData.filter((pro: any) => {
     for (const t of pro.tags) {
       console.log(t);
       if (t === tag && (!onlyOpen || pro.status === "Open")) return true;
@@ -137,6 +137,70 @@ async function getData(setData: any): Promise<Boolean> {
       tags: "Machine Learning, Artificial Intelligence".split(", "),
       status: "Closed",
     },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+    {
+      id: "731ed52f",
+      project_name: "Image processing",
+      professor: "RPJ",
+      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      status: "Closed",
+    },
+
     // ...
   ]);
   return true;
@@ -158,7 +222,7 @@ export default function Comp() {
     filterData(setData, data, ogData, value, onlyOpen);
   }, [ogData, value]);
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto">
       <div className="flex flex-row gap-4 md:gap-8">
         <Button
           onClick={() => {
