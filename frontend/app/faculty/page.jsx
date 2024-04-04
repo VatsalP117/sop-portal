@@ -1,3 +1,4 @@
+"use client";
 import CardDemo from "@/components/student-profile";
 import {
   Card,
@@ -20,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 
 export default function Faculty() {
   return (
@@ -38,31 +40,9 @@ export default function Faculty() {
           </CardHeader>
         </Card>
 
-        <Card className="projects-applied-card flex flex-col">
-          <CardHeader>
-            <CardTitle>Projects Added</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div className="flex flex-row items-center justify-start ">
-              <CardDescription className="basis-1/2">
-                Project Title
-              </CardDescription>
-              <Badge>Open</Badge>
-            </div>
-            <div className="flex flex-row items-center justify-start ">
-              <CardDescription className="basis-1/2">
-                Project Title
-              </CardDescription>
-              <Badge variant="outline">Closed</Badge>
-            </div>
-            <div className="flex flex-row items-center justify-start ">
-              <CardDescription className="basis-1/2">
-                Project Title
-              </CardDescription>
-              <Badge variant="destructive">Completed</Badge>
-            </div>
-          </CardContent>
-        </Card>
+        <Button asChild>
+          <Link href="/project/new">Add Project</Link>
+        </Button>
       </div>
       <div className="projects-section basis-3/4 ">
         {/* <ModeToggle /> */}

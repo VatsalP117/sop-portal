@@ -113,9 +113,15 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  <TableCell onClick={() => console.log(row)}>
-                    <Button>Apply</Button>
-                  </TableCell>
+                  {row.original.status == "Open" ? (
+                    <TableCell onClick={() => console.log(row.original)}>
+                      <Button>Apply</Button>
+                    </TableCell>
+                  ) : (
+                    <TableCell className="cursor-not-allowed">
+                      <Button disabled>Apply</Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             ) : (

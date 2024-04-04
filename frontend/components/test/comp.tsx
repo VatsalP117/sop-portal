@@ -155,7 +155,9 @@ async function getData(setData: any): Promise<Boolean> {
       id: "731ed52f",
       project_name: "Image processing",
       professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
+      tags: "Machine Learning, Artificial Intelligence, Software Development".split(
+        ", "
+      ),
       status: "Closed",
     },
     {

@@ -77,3 +77,7 @@
 .BOR {
   border: 2px solid red;
 }
+.bn-editor {
+  min-height: 50vh;
+  border: 1px solid black;
+}

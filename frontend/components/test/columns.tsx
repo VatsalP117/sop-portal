@@ -3,6 +3,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Badge } from "../ui/badge";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Project = {
@@ -27,6 +30,15 @@ export const columns: ColumnDef<Project>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <Link className="max-w-[500px] truncate font-medium" href="/login">
+            {row.getValue("project_name")}
+          </Link>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "professor",
@@ -42,10 +54,32 @@ export const columns: ColumnDef<Project>[] = [
         </Button>
       );
     },
+    // cell:({row})=>{
+    //   return(
+    //     <div className="flex space-x-2">
+    //       <span className="max-w-[500px] truncate font-medium">
+    //         {row.getValue("professor")}
+    //       </span>
+    //     </div>
+    //   )
+
+    // }
   },
   {
     accessorKey: "tags",
     header: "Project Tags",
+    cell: ({ row }) => {
+      console.log(row.getValue("tags"));
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate  flex flex-row gap-2 flex-wrap">
+            {row.getValue("tags").map((tag: any) => (
+              <Badge variant="secondary">{tag}</Badge>
+            ))}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "status",
