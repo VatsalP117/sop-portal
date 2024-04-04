@@ -71,82 +71,82 @@ export default function ProfileForm() {
     <div className="container pt-8 flex flex-col">
       <h1 className="text-5xl font-bold mb-8">Create a Project</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="project_title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Project Title</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Untitled Project"
-                    {...field}
-                    className="w-3/4 md:w-1/2"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Status</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "w-[200px] justify-between",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value
-                          ? statuses.find((stat) => stat.value === field.value)
-                              ?.label
-                          : "Select status"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search status..." />
-                      <CommandEmpty>Not found.</CommandEmpty>
-                      <CommandList>
-                        {statuses.map((language) => (
-                          <CommandItem
-                            value={language.label}
-                            key={language.value}
-                            onSelect={() => {
-                              form.setValue("status", language.value);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                language.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {language.label}
-                          </CommandItem>
-                        ))}
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="flex flex-row gap-14 items-center">
+            <FormField
+              control={form.control}
+              name="project_title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Project Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Untitled Project" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem className="flex flex-col h-full mt-2">
+                  <FormLabel>Status</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "w-[200px] justify-between",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? statuses.find(
+                                (stat) => stat.value === field.value
+                              )?.label
+                            : "Select status"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder="Search status..." />
+                        <CommandEmpty>Not found.</CommandEmpty>
+                        <CommandList>
+                          {statuses.map((language) => (
+                            <CommandItem
+                              value={language.label}
+                              key={language.value}
+                              onSelect={() => {
+                                form.setValue("status", language.value);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  language.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {language.label}
+                            </CommandItem>
+                          ))}
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name="date"
