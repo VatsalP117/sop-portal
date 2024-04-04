@@ -1,0 +1,28 @@
+"use client";
+
+import "@blocknote/core/fonts/inter.css";
+import { BlockNoteView, useCreateBlockNote } from "@blocknote/react";
+import "@blocknote/react/style.css";
+import { useEffect, useState } from "react";
+import { Block,BlockNoteEditor } from "@blocknote/core";
+import { useEditor } from "@tiptap/react";
+
+export default function Editor(props) {
+  // Creates a new editor instance.
+  const [blocks, setBlocks] = useState<Block[]>([]);
+
+  const editor:BlockNoteEditor = useCreateBlockNote({
+    initialContent: props.initial
+  });
+
+  // Renders the editor instance using a React component.
+  return (
+    <BlockNoteView
+      editor={editor}
+      onChange={() => {
+        setBlocks(editor.document);
+        localStorage.setItem("blocks", JSON.stringify(editor.document));
+      }}
+    />
+  );
+}
