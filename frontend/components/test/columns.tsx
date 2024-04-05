@@ -69,7 +69,7 @@ export const columns: ColumnDef<Project>[] = [
     accessorKey: "tags",
     header: "Project Tags",
     cell: ({ row }) => {
-      console.log(row.getValue("tags"));
+      //console.log(row.getValue("tags"));
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate  flex flex-row gap-2 flex-wrap">

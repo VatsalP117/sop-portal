@@ -80,20 +80,20 @@ function filterData(
   onlyOpen: any
 ) {
   //console.log(data, ogData, tag);
-  if (tag == "All Tags" && ogData) {
+  if (tag === "All Tags") {
     setData(ogData);
     return;
   }
   let i = 0;
   const newData = ogData.filter((pro: any) => {
     for (const t of pro.tags) {
-      console.log(t);
+      //console.log(t);
       if (t === tag && (!onlyOpen || pro.status === "Open")) return true;
     }
     return false;
   });
 
-  console.log(newData);
+  // console.log(newData);
   setData(newData);
 }
 //to be fetched from backend
@@ -217,12 +217,22 @@ export default function Comp() {
   const [onlyOpen, setOnlyOpen] = useState(false);
   const [value, setValue] = useState("All Tags");
   useEffect(() => {
-    getData(setData);
     getData(setOgData);
   }, []);
+  // useEffect(() => {
+  //   if (ogData.length > 0) setData(ogData);
+
+  //   console.log("mai hi hu bhai");
+  // }, [ogData, value]);
   useEffect(() => {
-    filterData(setData, data, ogData, value, onlyOpen);
+    console.log("mai hi hu bhai bahar se");
+    if (ogData.length > 0) {
+      console.log("mai hi hu bhai andar se");
+      filterData(setData, data, ogData, value, onlyOpen);
+    }
   }, [ogData, value]);
+  //console.log(data);
+  console.log("hello");
   return (
     <div className="container mx-auto">
       <div className="flex flex-row gap-4 md:gap-8">

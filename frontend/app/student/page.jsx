@@ -1,3 +1,4 @@
+"use client";
 import CardDemo from "@/components/student-profile";
 import {
   Card,
@@ -6,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Suspense } from "react";
 import { Icons } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ModeToggle from "@/components/mode-toggle";
@@ -72,50 +74,6 @@ export default function Student() {
       </div>
       <div className="projects-section basis-3/4 ">
         <Comp />
-        {/* <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[40px]">S.No.</TableHead>
-              <TableHead>Project Name</TableHead>
-              <TableHead>Professor</TableHead>
-              <TableHead>Project Type</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">1.</TableCell>
-              <TableCell>Project Title 1</TableCell>
-              <TableCell>Ram Prasad Joshi</TableCell>
-              <TableCell>ML</TableCell>
-              <TableCell>Open</TableCell>
-              <TableCell>
-                <Button variant="secondary">Apply</Button>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1.</TableCell>
-              <TableCell>Project Title 1</TableCell>
-              <TableCell>Ram Prasad Joshi</TableCell>
-              <TableCell>ML</TableCell>
-              <TableCell>Open</TableCell>
-              <TableCell>
-                <Button variant="secondary">Apply</Button>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">1.</TableCell>
-              <TableCell>Project Title 1</TableCell>
-              <TableCell>Ram Prasad Joshi</TableCell>
-              <TableCell>ML</TableCell>
-              <TableCell>Open</TableCell>
-              <TableCell>
-                <Button variant="secondary">Apply</Button>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table> */}
       </div>
     </div>
   );

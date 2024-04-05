@@ -68,7 +68,7 @@ export default function ProfileForm() {
     console.log(values);
   }
   return (
-    <div className="container pt-8 flex flex-col">
+    <div className="container pt-12 flex flex-col">
       <h1 className="text-5xl font-bold mb-8">Create a Project</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
