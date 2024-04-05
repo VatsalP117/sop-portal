@@ -21,24 +21,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 import { useEffect } from "react";
-import Link from "next/link";
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -78,7 +66,7 @@ export function DataTable<TData, TValue>({
           }}
           className="max-w-sm"
         />
-        <Input
+        {/* <Input
           placeholder="Search by Professor..."
           value={
             (table.getColumn("professor")?.getFilterValue() as string) ?? ""
@@ -88,7 +76,7 @@ export function DataTable<TData, TValue>({
             table.getColumn("professor")?.setFilterValue(event.target.value);
           }}
           className="max-w-sm"
-        />
+        /> */}
       </div>
       <div className="rounded-md border">
         <Table>
@@ -125,10 +113,12 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+
                   <TableCell onClick={() => console.log(row.original)}>
-                    <Button asChild>
-                      <Link href="/student-project/1234">View Details</Link>
-                    </Button>
+                    <Button>Edit</Button>
+                  </TableCell>
+                  <TableCell onClick={() => console.log(row.original)}>
+                    <Button variant="secondary">View Applications</Button>
                   </TableCell>
                 </TableRow>
               ))

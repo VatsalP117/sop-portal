@@ -19,12 +19,7 @@ export default function LoginPage() {
           buttonVariants({ variant: "ghost" }),
           "absolute left-4 top-4 md:left-8 md:top-8"
         )}
-      >
-        <>
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          Back
-        </>
-      </Link>
+      ></Link>
       <div className="flex flex-col gap-4 lg:flex-row">
         <div className="basis-1/2">
           <img src="https://illustrations.popsy.co/gray/studying.svg" />
@@ -39,8 +34,8 @@ export default function LoginPage() {
           </div>
           <Button asChild className="flex flex-row justify-center items-center">
             <Link href="/student">
-              <Icons.gitHub className="mr-2 h-4 w-4" />
-              Sign in with Github
+              {/* <Icons.gitHub className="mr-2 h-4 w-4" /> */}
+              Sign in with Google
             </Link>
           </Button>
           <p className="px-8 text-center text-sm text-muted-foreground">

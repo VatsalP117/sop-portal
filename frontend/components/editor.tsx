@@ -29,6 +29,7 @@ export default function Editor(props) {
   return (
     <BlockNoteView
       editor={editor}
+      editable={props.editable}
       className="-mt-3"
       theme={editorTheme}
       onChange={() => {

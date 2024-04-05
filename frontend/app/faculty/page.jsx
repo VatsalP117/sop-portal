@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-
+import Comp2 from "@/components/test-faculty/comp";
 export default function Faculty() {
   return (
     <div className="container flex h-[90vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
@@ -46,7 +46,7 @@ export default function Faculty() {
       </div>
       <div className="projects-section basis-3/4 ">
         {/* <ModeToggle /> */}
-        <Table>
+        {/* <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[40px]">S.No.</TableHead>
@@ -89,7 +89,8 @@ export default function Faculty() {
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </Table> */}
+        <Comp2 />
       </div>
     </div>
   );

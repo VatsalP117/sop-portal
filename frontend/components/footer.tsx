@@ -23,15 +23,6 @@ export default function Footer({
             >
               Team SemBack
             </a>
-            . Hosted on{" "}
-            <a
-              href="https://vercel.com"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              Vercel
-            </a>
             . Illustrations by{" "}
             <a
               href="https://popsy.co"
