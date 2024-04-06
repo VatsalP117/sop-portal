@@ -35,6 +35,7 @@ export default function Editor(props) {
       onChange={() => {
         setBlocks(editor.document);
         localStorage.setItem("blocks", JSON.stringify(editor.document));
+        props.setDescription(editor.document);
       }}
     />
   );

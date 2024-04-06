@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { useToast } from "@/components/ui/use-toast";
 import {
   Form,
   FormControl,
@@ -33,11 +32,12 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import MultiSelect from "@/components/multi-select";
-import { toast } from "@/components/ui/use-toast";
 import Editor from "@/components/editor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { ToastAction } from "@/components/ui/toast";
+import { toast } from "sonner";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -71,8 +71,9 @@ const formSchema = z.object({
 });
 
 export default function ProfileForm() {
-  const {toast} = useToast();
+  //const { toast } = useToast();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [description, setDescription] = useState([]);
   const handleSelectChange = (value: string) => {
     if (!selectedItems.includes(value)) {
       setSelectedItems((prev) => [...prev, value]);
@@ -93,25 +94,35 @@ export default function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      project_title: "Project Title",
+      project_title: "",
     },
     mode: "onChange",
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    try {
+      console.log(values);
     console.log(selectedItems);
-    const response:any = await fetch("/api/faculty/createproject",{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
+    console.log(description);
+    const response: any = await fetch("/api/faculty/createproject", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      witthCredentials:true,
-      body:JSON.stringify({...values, tags:selectedItems}),
-    })
-    if(response.status === 200){
-      toast({title:"Success",description:"Project created successfully"});
+      witthCredentials: true,
+      body: JSON.stringify({
+        ...values,
+        tags: selectedItems,
+        description: description,
+      }),
+    });
+    if (response.status === 200) {
+      toast("Project added successfully");
     } else {
-      toast({title:"Failure",description:"An error occured"});
+      toast("Failed to add project");
+    }
+    } catch(err){
+      console.log(err)
+      toast("unable to connect to server")
     }
   }
   return (
@@ -283,7 +294,7 @@ export default function ProfileForm() {
             </div>
           </div>
           <h3>Project Description</h3>
-          <Editor editable={true} />
+          <Editor editable={true} setDescription={setDescription} />
           <Button type="submit">Submit</Button>
         </form>
       </Form>
