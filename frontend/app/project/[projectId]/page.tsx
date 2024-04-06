@@ -31,20 +31,37 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import MultiSelect from "@/components/multi-select";
 import { toast } from "@/components/ui/use-toast";
 import Editor from "@/components/editor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 const statuses = [
   { label: "Open", value: "Open" },
   { label: "Closed", value: "Closed" },
   { label: "Completed", value: "Completed" },
 ] as const;
+interface ISelectProps {
+  values: {
+    key: string;
+    value: string;
+  }[];
+}
 const formSchema = z.object({
   project_title: z.string().min(5, {
     message: "Project Title must be at least 5 characters.",
   }),
-  tags: z.array(z.string()),
+  //tags: z.array(z.string()),
   status: z.string({ required_error: "A status is required." }),
   date: z.date({
     required_error: "A date is required.",
@@ -53,6 +70,24 @@ const formSchema = z.object({
 });
 
 export default function ProfileForm() {
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const handleSelectChange = (value: string) => {
+    if (!selectedItems.includes(value)) {
+      setSelectedItems((prev) => [...prev, value]);
+    } else {
+      const referencedArray = [...selectedItems];
+      const indexOfItemToBeRemoved = referencedArray.indexOf(value);
+      referencedArray.splice(indexOfItemToBeRemoved, 1);
+      setSelectedItems(referencedArray);
+    }
+  };
+  const isOptionSelected = (value: string): boolean => {
+    return selectedItems.includes(value) ? true : false;
+  };
+  const values: ISelectProps["values"][0][] = [
+    { key: "Software Development", value: "Software Development" },
+    { key: "ML", value: "ML" },
+  ];
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -195,6 +230,41 @@ export default function ProfileForm() {
                 </FormItem>
               )}
             />
+          </div>
+          <div className="flex flex-row gap-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="flex gap-2 font-bold">
+                  <span>Select Tags</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-56"
+                onCloseAutoFocus={(e) => e.preventDefault()}
+              >
+                <DropdownMenuLabel>Tags</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {values.map(
+                  (value: ISelectProps["values"][0], index: number) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        onSelect={(e) => e.preventDefault()}
+                        key={index}
+                        checked={isOptionSelected(value.key)}
+                        onCheckedChange={() => handleSelectChange(value.key)}
+                      >
+                        {value.value}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  }
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <div className="flex flex-row gap-2">
+              {selectedItems.map((item) => (
+                <Badge>{item}</Badge>
+              ))}
+            </div>
           </div>
           <h3>Project Description</h3>
           <Editor editable={true} />
