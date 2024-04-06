@@ -30,11 +30,13 @@ This web-based task management system facilitates the process of managing SOP/DO
 
 - **Student View and Applying for Projects:**
   - User Authentication: Students can securely log in to the portal.
+  - Updating Profile: Students can update their profile by updating their CGPA & Resume.
   - Accessing SOP/DOP/SAT Projects: Students can browse available projects.
-  - Displaying Faculty Profiles and Advertisements: Showcase faculty profiles and project advertisements.
+  - Displaying Faculty and Advertisements: Showcase faculty and project advertisements.
   - Selecting Research Area: Students can choose their preferred research area.
   - Displaying Relevant Projects: Projects are dynamically filtered based on selected research areas.
-  - Applying to Projects: Students can apply to projects by filling out a form.
+  - Displaying Closed/Completed Projects of the faculties: Students can view the info for the closed/completed projects.
+  - Applying to Projects: Students can apply to projects by clicking the Apply button.
 
 ### Faculty Accepting Student Request
 
