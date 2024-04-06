@@ -69,21 +69,13 @@ export default function Student() {
                   <Label htmlFor="cgpa" className="text-right">
                     CGPA
                   </Label>
-                  <Input
-                    id="name"
-                    defaultValue="Pedro Duarte"
-                    className="col-span-3"
-                  />
+                  <Input id="cgpa" defaultValue="8.00" className="col-span-3" />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="username" className="text-right">
-                    Username
+                    Resume
                   </Label>
-                  <Input
-                    id="username"
-                    defaultValue="@peduarte"
-                    className="col-span-3"
-                  />
+                  <Input id="resume" defaultValue="" className="col-span-3" />
                 </div>
               </div>
               <DialogFooter>
@@ -92,12 +84,12 @@ export default function Student() {
             </DialogContent>
           </Dialog>
         </div>
-        <Card className="resume-card flex flex-row items-center justify-center">
+        {/* <Card className="resume-card flex flex-row items-center justify-center">
           <CardHeader>
             <CardTitle>Resume</CardTitle>
           </CardHeader>
           <Icons.upload className="ml-auto mr-4 h-10 w-10" />
-        </Card>
+        </Card> */}
         <Card className="projects-applied-card flex flex-col">
           <CardHeader>
             <CardTitle>Projects Applied</CardTitle>
