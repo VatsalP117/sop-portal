@@ -20,10 +20,6 @@ This web-based task management system facilitates the process of managing SOP/DO
 
 ## Features
 
-### Admin Module
-
-- **Admin Login:** Secure login using Gmail authentication.
-  
 ### Faculty Module
 
 - **Faculty Upload Data:** Faculty members can upload project proposals and advertisements.
