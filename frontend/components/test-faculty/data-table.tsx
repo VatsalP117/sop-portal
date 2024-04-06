@@ -27,6 +27,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 import { useEffect } from "react";
+import Link from "next/link";
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -42,7 +43,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-
+    
     state: {
       columnFilters,
       sorting,
@@ -50,6 +51,7 @@ export function DataTable<TData, TValue>({
   });
   useEffect(() => {
     table.setPageSize(5);
+    
   }, []);
 
   return (
@@ -104,7 +106,9 @@ export function DataTable<TData, TValue>({
                   ))}
 
                   <TableCell onClick={() => console.log(row.original)}>
-                    <Button>Edit</Button>
+                    <Button asChild>
+                      <Link href={`/project/${row.original.id}`}>Edit</Link>
+                    </Button>
                   </TableCell>
                   <TableCell onClick={() => console.log(row.original)}>
                     <Button variant="secondary">View Applications</Button>

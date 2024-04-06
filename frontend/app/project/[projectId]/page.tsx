@@ -38,7 +38,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -47,6 +47,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
 const statuses = [
   { label: "Open", value: "Open" },
   { label: "Closed", value: "Closed" },
@@ -70,8 +71,31 @@ const formSchema = z.object({
   gpsrn: z.string(),
 });
 
-export default function ProfileForm() {
+export default function ProfileForm({ params }) {
   //const { toast } = useToast();
+  const [initial, setInitial] = useState(null);
+  useEffect(() => {
+    if (params.projectId !== "new") {
+      fetch("/api/faculty/getprojectdescription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          projectid: params.projectId,
+        }),
+        withCredentials: true,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          //document.getElementById("project_title").value = data.project_title;
+          setSelectedItems(data.tags);
+          setInitial(data);
+        });
+    }
+  }, []);
+
+  const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [description, setDescription] = useState([]);
   const handleSelectChange = (value: string) => {
@@ -95,39 +119,73 @@ export default function ProfileForm() {
     { key: "Artificial Intelligence", value: "Artificial Intelligence" },
     { key: "Miscellaneous", value: "Miscellaneous" },
   ];
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      project_title: "",
-    },
+    // defaultValues: {
+    //   project_title: "",
+    // },
     mode: "onChange",
   });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-    console.log(selectedItems);
-    console.log(description);
-    const response: any = await fetch("/api/faculty/createproject", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      witthCredentials: true,
-      body: JSON.stringify({
-        ...values,
-        date:values.date.toDateString(),
-        tags: selectedItems,
-        description: description,
-      }),
-    });
-    if (response.status === 200) {
-      toast("Project added successfully");
+    if (params.projectId === "new") {
+      try {
+        console.log(values);
+        console.log(selectedItems);
+        console.log(description);
+        const response: any = await fetch("/api/faculty/createproject", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          witthCredentials: true,
+          body: JSON.stringify({
+            ...values,
+            date: values.date.toDateString(),
+            tags: selectedItems,
+            description: description,
+          }),
+        });
+        if (response.status === 200) {
+          toast("Project added successfully");
+          router.push("/faculty");
+        } else {
+          toast("Failed to add project");
+        }
+      } catch (err) {
+        console.log(err);
+        toast("unable to connect to server");
+      }
     } else {
-      toast("Failed to add project");
-    }
-    } catch(err){
-      console.log(err)
-      toast("unable to connect to server")
+      try {
+        console.log(values);
+        console.log(selectedItems);
+        console.log(description);
+        const response: any = await fetch("/api/faculty/editproject", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          witthCredentials: true,
+          body: JSON.stringify({
+            ...values,
+            date: values.date.toDateString(),
+            tags: selectedItems,
+            description: description,
+            projectid: params.projectId,
+          }),
+        });
+        if (response.status === 200) {
+          toast("Project Updated Successfully");
+          router.push("/faculty");
+        } else {
+          toast("Failed to update project");
+        }
+      } catch (err) {
+        console.log(err);
+        toast("unable to connect to server");
+      }
     }
   }
   return (
@@ -140,10 +198,10 @@ export default function ProfileForm() {
               control={form.control}
               name="project_title"
               render={({ field }) => (
-                <FormItem>
+                <FormItem id="project_title">
                   <FormLabel>Project Title</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} defaultValue={initial?.project_title} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -256,7 +314,11 @@ export default function ProfileForm() {
                 <FormItem>
                   <FormLabel>GPSRN</FormLabel>
                   <FormControl>
-                    <Input placeholder="GPSRN" {...field} />
+                    <Input
+                      placeholder="GPSRN"
+                      {...field}
+                      defaultValue={initial?.gpsrn}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -299,7 +361,13 @@ export default function ProfileForm() {
             </div>
           </div>
           <h3>Project Description</h3>
-          <Editor editable={true} setDescription={setDescription} />
+          {(initial || params.projectId === "new") && (
+            <Editor
+              editable={true}
+              setDescription={setDescription}
+              initial={initial.description}
+            />
+          )}
           <Button type="submit">Submit</Button>
         </form>
       </Form>
