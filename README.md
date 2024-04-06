@@ -14,5 +14,42 @@
 
 ## [Problem Statement](https://docs.google.com/document/d/19SuRrZRu9lVcL61EMlKiNf8ZXJFisy8y3PxHM8UbFbc/edit#heading=h.4ry0k29a6lde)
 
+## Overview
+
+This web-based task management system facilitates the process of managing SOP/DOP/SAT projects within the Department of Computer Science & Information Systems (CSIS) at BITS (Birla Institute of Technology & Science)
+
+## Features
+
+### Admin Module
+
+- **Admin Login:** Secure login using Gmail authentication.
+  
+### Faculty Module
+
+- **Faculty Upload Data:** Faculty members can upload project proposals and advertisements.
+  - Advertise New: Faculty can submit new project proposals.
+  - View Old Advertisement: Faculty can view previously published project advertisements.
+
+### Student Module
+
+- **Student View and Applying for Projects:**
+  - User Authentication: Students can securely log in to the portal.
+  - Accessing SOP/DOP/SAT Projects: Students can browse available projects.
+  - Displaying Faculty Profiles and Advertisements: Showcase faculty profiles and project advertisements.
+  - Selecting Research Area: Students can choose their preferred research area.
+  - Displaying Relevant Projects: Projects are dynamically filtered based on selected research areas.
+  - Applying to Projects: Students can apply to projects by filling out a form.
+
+### Faculty Accepting Student Request
+
+- **Accessing Student Applications:** Faculty can view applications from students.
+- **Viewing Student Applications:** Faculty can review student applications.
+- **Sorting Applications by CGPA:** Applications can be sorted based on students' CGPA.
+- **Reviewing Student Applications:** Faculty can evaluate student applications.
+- **Providing Feedback:** Faculty can provide feedback and mark application status.
+
+
+
+
 <h3 align="left">Languages and Tools:</h3>
 <p align="left"> <a href="https://www.blender.org/" target="_blank" rel="noreferrer"> <img src="https://download.blender.org/branding/community/blender_community_badge_white.svg" alt="blender" width="40" height="40"/> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> <a href="https://www.figma.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/figma/figma-icon.svg" alt="figma" width="40" height="40"/> </a> <a href="https://www.gatsbyjs.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/gatsbyjs/gatsbyjs-icon.svg" alt="gatsby" width="40" height="40"/> </a> <a href="https://git-scm.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/> </a> <a href="https://ifttt.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/ifttt/ifttt-ar21.svg" alt="ifttt" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://nextjs.org/" target="_blank" rel="noreferrer"> <img src="https://cdn.worldvectorlogo.com/logos/nextjs-2.svg" alt="nextjs" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a> <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="tailwind" width="40" height="40"/> </a> </p>
