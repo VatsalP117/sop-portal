@@ -14,7 +14,13 @@ const StudentSchema = new mongoose.Schema({
             id: {type:mongoose.Schema.Types.ObjectId,ref:'Project'},
             status: String,
         }],
-    }
+    },
+    cgpa: {
+        type: String,
+    },
+    resume: {
+        type: String,
+    },
 });
 
 const Student = mongoose.model('Student', StudentSchema);

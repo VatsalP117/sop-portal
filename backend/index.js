@@ -2,6 +2,7 @@ const express = require('express')
 require('dotenv').config();
 require('./controllers/db');
 const AuthRouter = require('./routes/auth')
+const studentRouter = require('./routes/student')
 const {studentMiddleware,facultyMiddleware} = require('./controllers/middleware')
 const session = require('express-session')
 
@@ -17,6 +18,8 @@ app.use(session({
 }));
 
 app.use('/api/auth', AuthRouter)
+
+app.use('/api/student',studentRouter)
 
 const PORT = process.env.PORT || 5000
 

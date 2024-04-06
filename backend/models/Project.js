@@ -21,5 +21,18 @@ const ProjectSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'pending'
+    },
+    tags : {
+        type: String,
+    },
+    Date : {
+        type: Date,
+    },
+    gpsrn : {
+        type: String,
     }
 });
+
+const Project = mongoose.model('Project', ProjectSchema);
+
+module.exports = Project;
