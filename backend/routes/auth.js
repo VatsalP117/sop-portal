@@ -18,7 +18,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/user', (req, res) => {
     if(req.isAuthenticated()){
-        return res.json(req.user);
+        return res.json({email: req.user.emails[0].value, type: req.user.type, id:req.user.mongoid, name:req.user.displayName, image:req.user.photos[0].value});
     }
     return res.status(401).json({message: 'User not authenticated'});
 });

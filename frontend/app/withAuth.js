@@ -4,23 +4,19 @@ import React,{useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 
-const checkAuthentication = async (setUsername) => {
+const checkAuthentication = async (setUser,type) => {
     // Check if the user is authenticated
     try {
-        const token = localStorage.getItem('token');
-        if(!token) {
-            return false;
-        }
-        const response = await fetch('/api/auth/isloggedin', {
+        const response = await fetch('/api/auth/user', {
             method: 'GET',
-            headers: {
-                'Authorization': JSON.stringify(token),
-            },
             withCredentials: true,
         })
         if(response.status === 200) {
-            const {username} = await response.json();
-            setUsername(username);
+            const user = await response.json();
+            setUser(user);
+            if(user.type !== type) {
+                return false;
+            }
             return true;
         }
         return false;
@@ -29,15 +25,15 @@ const checkAuthentication = async (setUsername) => {
     }
 };
 
-const withAuth = (WrappedComponent) => {
+const withAuth = (WrappedComponent,type) => {
     const AuthComponent = (props) => {
         const [loading, setLoading] = useState(true);
-        const [username, setUsername] = useState('');
+        const [user, setUser] = useState({});
 
         const router = useRouter();
 
         useEffect(() => {
-            checkAuthentication(setUsername).then((isAuthenticated) => {
+            checkAuthentication(setUser,type).then((isAuthenticated) => {
                 if(!isAuthenticated) {
                     router.push('/login');
                 } else {
@@ -52,7 +48,7 @@ const withAuth = (WrappedComponent) => {
             return <Card className="h-[100vh] flex items-center justify-center text-5xl">Loading...</Card>
         }
 
-        return <WrappedComponent {...props} username={username}/>
+        return <WrappedComponent {...props} user={user}/>
     };
     return AuthComponent;
 };

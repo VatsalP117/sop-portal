@@ -24,6 +24,7 @@ passport.use(
         });
         if (faculty) {
           profile.type = "faculty";
+          profile.mongoid = faculty._id;
           return done(null, profile);
         }
 
@@ -37,6 +38,7 @@ passport.use(
         });
         if (student) {
           profile.type = "student";
+          profile.mongoid = student._id;
           return done(null, profile);
         }
 
@@ -45,8 +47,9 @@ passport.use(
           name: profile.displayName,
         });
 
-        await new_student.save();
+        const saved_student = await new_student.save();
 
+        profile.mongoid = saved_student._id;
         profile.type = "student";
 
         return done(null, profile);
