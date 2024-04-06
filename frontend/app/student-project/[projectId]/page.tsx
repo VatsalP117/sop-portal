@@ -36,20 +36,12 @@ import Editor from "@/components/editor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
+import { Textarea } from "@/components/ui/textarea";
 const statuses = [
   { label: "Open", value: "Open" },
   { label: "Closed", value: "Closed" },
   { label: "Completed", value: "Completed" },
 ] as const;
-const formSchema = z.object({
-  project_title: z.string().min(5, {
-    message: "Project Title must be at least 5 characters.",
-  }),
-  tags: z.string(),
-  status: z.string({ required_error: "A status is required." }),
-  date: z.string(),
-  gpsrn: z.string(),
-});
 const projectDetails = {
   project_title: "Rollator ka Project",
   tags: "",
@@ -57,6 +49,21 @@ const projectDetails = {
   date: new Date(),
   gpsrn: "CSF304",
 };
+const formSchema = z.object({
+  project_title: z.string().min(5, {
+    message: "Project Title must be at least 5 characters.",
+  }),
+  tags: z.string(),
+  status: z.string({ required_error: "A status is required." }),
+  date: z.date(),
+  gpsrn: z.string(),
+});
+const formSchema2 = z.object({
+  comments: z.string().min(10, {
+    message: "Comments must be at least 10 characters.",
+  }),
+});
+
 export default function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -68,6 +75,9 @@ export default function ProfileForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
+  const form2 = useForm<z.infer<typeof formSchema2>>({
+    resolver: zodResolver(formSchema2),
+  });
   return (
     <div className="container pt-12 flex flex-col">
       <h1 className="text-5xl font-bold mb-8">Project Details</h1>
@@ -143,6 +153,35 @@ export default function ProfileForm() {
               },
             ]}
           />
+        </form>
+      </Form>
+      <Form {...form2}>
+        <form
+          onSubmit={form2.handleSubmit(onSubmit)}
+          className="w-2/3 space-y-6 mt-6"
+        >
+          <FormField
+            control={form2.control}
+            name="comments"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Comments</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Tell us a little bit about yourself"
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Please mention relevant comments you would like the faculty to
+                  consider.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
         </form>
       </Form>
     </div>

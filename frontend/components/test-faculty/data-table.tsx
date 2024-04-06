@@ -49,7 +49,7 @@ export function DataTable<TData, TValue>({
     },
   });
   useEffect(() => {
-    table.setPageSize(8);
+    table.setPageSize(5);
   }, []);
 
   return (
@@ -66,17 +66,6 @@ export function DataTable<TData, TValue>({
           }}
           className="max-w-sm"
         />
-        {/* <Input
-          placeholder="Search by Professor..."
-          value={
-            (table.getColumn("professor")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) => {
-            console.log(event.target.value);
-            table.getColumn("professor")?.setFilterValue(event.target.value);
-          }}
-          className="max-w-sm"
-        /> */}
       </div>
       <div className="rounded-md border">
         <Table>

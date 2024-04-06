@@ -61,7 +61,7 @@ const formSchema = z.object({
   project_title: z.string().min(5, {
     message: "Project Title must be at least 5 characters.",
   }),
-  //tags: z.array(z.string()),
+  tags: z.array(z.string()),
   status: z.string({ required_error: "A status is required." }),
   date: z.date({
     required_error: "A date is required.",
@@ -121,7 +121,7 @@ export default function ProfileForm() {
               control={form.control}
               name="status"
               render={({ field }) => (
-                <FormItem className="flex flex-col h-full mt-2">
+                <FormItem className="flex flex-col h-full mt-2 ml-3 ">
                   <FormLabel>Status</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
