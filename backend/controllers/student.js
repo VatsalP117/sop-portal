@@ -6,9 +6,9 @@ const getStudentDetails = async (req, res) => {
     try {
         const student = await Student.findById(req.user.mongoid);
         if (!student) {
-            return res.status(404).send({ message: 'Student not found' });
+            return res.status(404).json({ message: 'Student not found' });
         }
-        return res.status(200).send({cgpa:student.cgpa,resume:student.resume});
+        return res.status(200).json({cgpa:student.cgpa,resume:student.resume});
     } catch (error) {
         console.log(error);
         return res.status(500).send({ message: error.message });
@@ -19,7 +19,7 @@ const getAllprojects = async (req,res) => {
     try {
         const projects = await Project.find().populate('faculty');
         if(!projects){
-            return res.status(404).send({message: 'No projects found'});
+            return res.status(404).json({message: 'No projects found'});
         }
         const new_projects = projects.map((project)=>{
             return {
@@ -30,10 +30,10 @@ const getAllprojects = async (req,res) => {
                 professor: project.faculty.name,
             }
         })
-        return res.status(200).send();
+        return res.status(200).json(new_projects);
     } catch (error) {
         console.log(error);
-        return res.status(500).send({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
@@ -47,7 +47,7 @@ const getProjectDescrition = (req,res) => {
         if(!project){
             return res.status(404).send('project not found')
         }
-        return res.status(200).send({
+        return res.status(200).json({
             id: project._id,
             project_title: project.title,
             status: project.status,
@@ -59,7 +59,7 @@ const getProjectDescrition = (req,res) => {
         });
     } catch(error){
         console.log(error);
-        return res.status(500).send({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
@@ -97,7 +97,7 @@ const applyForProject = async (req,res) => {
         return res.status(200).send('Applied for project successfully');
     } catch(error){
         console.log(error);
-        return res.status(500).send({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 }
 
