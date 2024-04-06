@@ -5,10 +5,10 @@
 
 |Name|BITSid|
 |----|------|
-|Nikhil Kudva|2021A7PSG|
-|Ruchik Bakhai|2021A7PSG|
+|Nikhil Kudva|2021A7PS2409G|
+|Ruchik Bakhai|2021A7PS2054G|
 |Shubh Agarwal|2021AAPS2770G|
-|Vatsal Patel|2021A7PSG|
+|Vatsal Patel|2021A7PS2460G|
 
 <hr>
 
