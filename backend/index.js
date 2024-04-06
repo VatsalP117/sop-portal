@@ -3,6 +3,7 @@ require('dotenv').config();
 require('./controllers/db');
 const AuthRouter = require('./routes/auth')
 const studentRouter = require('./routes/student')
+const facultyRouter = require('./routes/faculty')
 const {studentMiddleware,facultyMiddleware} = require('./controllers/middleware')
 const session = require('express-session')
 
@@ -20,6 +21,8 @@ app.use(session({
 app.use('/api/auth', AuthRouter)
 
 app.use('/api/student',studentRouter)
+
+app.use('/api/faculty',facultyRouter);
 
 const PORT = process.env.PORT || 5000
 
