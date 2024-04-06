@@ -1,12 +1,16 @@
 # SOP Portal
 >By Team SemBack
 
+<hr>
+
 |Name|BITSid|
 |----|------|
 |Nikhil Kudva|2021A7PSG|
 |Ruchik Bakhai|2021A7PSG|
 |Shubh Agarwal|2021AAPS2770G|
 |Vatsal Patel|2021A7PSG|
+
+<hr>
 
 ## [Problem Statement](https://docs.google.com/document/d/19SuRrZRu9lVcL61EMlKiNf8ZXJFisy8y3PxHM8UbFbc/edit#heading=h.4ry0k29a6lde)
 
