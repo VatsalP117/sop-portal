@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import { Badge } from "@/components/ui/badge";
 import {
   Form,
   FormControl,
@@ -44,7 +45,7 @@ const statuses = [
 ] as const;
 const projectDetails = {
   project_title: "Rollator ka Project",
-  tags: "",
+  tags: ["Software Development", "Machine Learning"],
   status: "Open",
   date: new Date(),
   gpsrn: "CSF304",
@@ -53,7 +54,7 @@ const formSchema = z.object({
   project_title: z.string().min(5, {
     message: "Project Title must be at least 5 characters.",
   }),
-  tags: z.string(),
+  tags: z.array(z.string()),
   status: z.string({ required_error: "A status is required." }),
   date: z.date(),
   gpsrn: z.string(),
@@ -142,6 +143,14 @@ export default function ProfileForm() {
                 </FormItem>
               )}
             />
+          </div>
+          <div className="flex flex-col gap-3">
+            <FormLabel>Tags</FormLabel>
+            <div className="flex flex-row gap-2">
+              {projectDetails.tags.map((item) => (
+                <Badge>{item}</Badge>
+              ))}
+            </div>
           </div>
           <h3>Project Description</h3>
           <Editor
