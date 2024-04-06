@@ -1,14 +1,9 @@
-import { Metadata } from "next";
+"use client"
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-
-export const metadata: Metadata = {
-  title: "Login",
-  description: "Login to your account",
-};
 
 export default function LoginPage() {
   return (
@@ -32,11 +27,10 @@ export default function LoginPage() {
             Enter your email to sign in to your account
           </p> */}
           </div>
-          <Button asChild className="flex flex-row justify-center items-center">
-            <Link href="/student">
-              {/* <Icons.gitHub className="mr-2 h-4 w-4" /> */}
+          <Button className="flex flex-row justify-center items-center" onClick={()=>{
+            window.open('/api/auth/google', '_self');
+          }}>
               Sign in with Google
-            </Link>
           </Button>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
