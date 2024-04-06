@@ -48,7 +48,9 @@ This web-based task management system facilitates the process of managing SOP/DO
 - **Reviewing Student Applications:** Faculty can evaluate student applications.
 - **Providing Feedback:** Faculty can provide feedback and mark application status.
 
+## Conclusion
 
+The SOP/DOP/SAT Project Management System streamlines the process of managing academic projects, enhancing collaboration between faculty and students within the CSIS department.
 
 
 <h3 align="left">Languages and Tools:</h3>
