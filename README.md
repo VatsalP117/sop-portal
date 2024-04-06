@@ -44,8 +44,8 @@ This web-based task management system facilitates the process of managing SOP/DO
 - **Accessing Student Applications:** Faculty can view applications from students.
 - **Viewing Student Applications:** Faculty can review student applications.
 - **Sorting Applications by CGPA:** Applications can be sorted based on students' CGPA.
-- **Reviewing Student Applications:** Faculty can evaluate student applications.
-- **Providing Feedback:** Faculty can provide feedback and mark application status.
+- **Reviewing Student Applications:** Faculty can evaluate student applications through their linked resume.
+- **Application Status:** Faculty can mark the student's application status.
 
 ## Conclusion
 
