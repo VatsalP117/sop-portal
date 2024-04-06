@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
     },
   });
   useEffect(() => {
-    table.setPageSize(8);
+    table.setPageSize(5);
   }, []);
 
   return (

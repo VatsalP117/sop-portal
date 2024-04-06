@@ -23,23 +23,75 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function Student() {
   return (
     <div className="container flex h-[90vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
       <div className="student-data-section basis-1/4  flex flex-col gap-10">
-        <Card className="student-card flex flex-row items-center justify-center">
-          <Avatar className="ml-6">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <CardHeader className="m-auto mr-4">
-            <CardTitle>Vatsal Patel</CardTitle>
-            <CardDescription className="font-bold">
-              2021A7PS2460G
-            </CardDescription>
-          </CardHeader>
-        </Card>
+        <div className="flex flex-col">
+          <Card className="student-card flex flex-row items-center justify-center">
+            <Avatar className="ml-6">
+              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <CardHeader className="m-auto mr-4">
+              <CardTitle>Vatsal Patel</CardTitle>
+              <CardDescription className="font-bold">
+                2021A7PS2460G
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Update Profile</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Update profile</DialogTitle>
+                <DialogDescription>
+                  Make changes to your profile here. Click save when you're
+                  done.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="cgpa" className="text-right">
+                    CGPA
+                  </Label>
+                  <Input
+                    id="name"
+                    defaultValue="Pedro Duarte"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="username" className="text-right">
+                    Username
+                  </Label>
+                  <Input
+                    id="username"
+                    defaultValue="@peduarte"
+                    className="col-span-3"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Save changes</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
         <Card className="resume-card flex flex-row items-center justify-center">
           <CardHeader>
             <CardTitle>Resume</CardTitle>
