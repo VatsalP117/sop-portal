@@ -31,7 +31,7 @@ This web-based task management system facilitates the process of managing SOP/DO
 
 - **Student View and Applying for Projects:**
   - User Authentication: Students can securely log in to the portal.
-  - Updating Profile: Students can update their profile by updating their CGPA & Resume.
+  - Updating Profile: Students can update their profile by updating their CGPA & Resume(through a link).
   - Accessing SOP/DOP/SAT Projects: Students can browse available projects.
   - Displaying Faculty and Advertisements: Showcase faculty and project advertisements.
   - Selecting Research Area: Students can choose their preferred research area.
