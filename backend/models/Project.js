@@ -6,7 +6,7 @@ const ProjectSchema = new mongoose.Schema({
         required: true
     },
     description: {
-        type: Array,
+        type: String,
     },
     faculty: {
         type: mongoose.Schema.Types.ObjectId,
@@ -25,8 +25,8 @@ const ProjectSchema = new mongoose.Schema({
     tags : {
         type: String,
     },
-    Date : {
-        type: Date,
+    date : {
+        type: String,
     },
     gpsrn : {
         type: String,

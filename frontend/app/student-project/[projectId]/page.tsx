@@ -33,30 +33,27 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { toast } from "@/components/ui/use-toast";
-import Editor from "@/components/editor";
+import Editor from "@/components/student_editor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { Textarea } from "@/components/ui/textarea";
+
+import { useEffect, useState } from "react";
+
 const statuses = [
   { label: "Open", value: "Open" },
   { label: "Closed", value: "Closed" },
   { label: "Completed", value: "Completed" },
 ] as const;
-const projectDetails = {
-  project_title: "Rollator ka Project",
-  tags: ["Software Development", "Machine Learning"],
-  status: "Open",
-  date: new Date(),
-  gpsrn: "CSF304",
-};
+
 const formSchema = z.object({
   project_title: z.string().min(5, {
     message: "Project Title must be at least 5 characters.",
   }),
   tags: z.array(z.string()),
   status: z.string({ required_error: "A status is required." }),
-  date: z.date(),
+  date: z.string(),
   gpsrn: z.string(),
 });
 const formSchema2 = z.object({
@@ -65,7 +62,27 @@ const formSchema2 = z.object({
   }),
 });
 
-export default function ProfileForm() {
+export default function ProfileForm(props) {
+  const [projectDetails,setProjectDetails] = useState({});
+
+  useEffect(() => {
+    const response = fetch('/api/student/getprojectdescription',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        projectid: props.params.projectId,
+      }),
+      withCredentials: true,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setProjectDetails(data);
+    })
+  },[]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -147,21 +164,19 @@ export default function ProfileForm() {
           <div className="flex flex-col gap-3">
             <FormLabel>Tags</FormLabel>
             <div className="flex flex-row gap-2">
-              {projectDetails.tags.map((item) => (
+              {projectDetails.tags && projectDetails.tags.map((item) => (
                 <Badge>{item}</Badge>
               ))}
             </div>
           </div>
           <h3>Project Description</h3>
-          <Editor
+          {projectDetails.description && <Editor
             editable={false}
-            initial={[
-              {
-                type: "paragraph",
-                content: "Project Description",
-              },
-            ]}
-          />
+            initial={projectDetails.description?projectDetails.description:[{
+              type: "paragraph",
+              content:"No description available."
+            }]}
+          />}
         </form>
       </Form>
       <Form {...form2}>

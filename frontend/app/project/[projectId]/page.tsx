@@ -115,6 +115,7 @@ export default function ProfileForm() {
       witthCredentials: true,
       body: JSON.stringify({
         ...values,
+        date:values.date.toDateString(),
         tags: selectedItems,
         description: description,
       }),

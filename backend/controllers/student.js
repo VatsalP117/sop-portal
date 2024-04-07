@@ -37,15 +37,15 @@ const getAllprojects = async (req,res) => {
     }
 }
 
-const getProjectDescrition = (req,res) => {
+const getProjectDescrition = async (req,res) => {
     try {
         const id = req.body.projectid;
         if(!id){
-            return res.status(402).send('project id not found')
+            return res.status(402).json({message:'project id not found'})
         }
-        const project = Project.findOne({_id:id})
+        const project = await Project.findOne({_id:id})
         if(!project){
-            return res.status(404).send('project not found')
+            return res.status(404).json({message:'project not found'})
         }
         return res.status(200).json({
             id: project._id,
@@ -54,7 +54,7 @@ const getProjectDescrition = (req,res) => {
             tags: project.tags.split(','),
             professor: project.faculty.name,
             date: project.date, 
-            description:project.description,
+            description:JSON.parse(project.description),
             gpsrn: project.gpsrn
         });
     } catch(error){
