@@ -56,7 +56,7 @@ export const columns: ColumnDef<Application>[] = [
     header:"",
     cell: ({ row }) => {
       return (
-          <Button onClick={()=>{
+          <Button size="sm" onClick={()=>{
             window.open(row.getValue("resume"), "_blank");
           }}>View Resume</Button>
       );
@@ -73,7 +73,7 @@ export const columns: ColumnDef<Application>[] = [
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate  flex flex-row gap-2 flex-wrap">
-              <Badge>Accepted</Badge>
+              <Badge className="text-md">Accepted</Badge>
             </span>
           </div>
         );
@@ -81,7 +81,7 @@ export const columns: ColumnDef<Application>[] = [
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate  flex flex-row gap-2 flex-wrap">
-              <Badge variant="destructive">Rejected</Badge>
+              <Badge className="text-md" variant="destructive">Rejected</Badge>
             </span>
           </div>
         );

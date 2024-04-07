@@ -80,6 +80,10 @@ const applyForProject = async (req,res) => {
             return res.status(404).send('student not found')
         }
 
+        if(!student.cgpa || !student.resume){
+            return res.status(400).send('Please upload your details first');
+        }
+
         //check if student already applied for given project
         const applied = student.projects.find((project)=>{
             return project.id == id;
