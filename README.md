@@ -47,6 +47,33 @@ This web-based task management system facilitates the process of managing SOP/DO
 - **Reviewing Student Applications:** Faculty can evaluate student applications through their linked resume.
 - **Application Status:** Faculty can mark the student's application status.
 
+## Database Tables
+
+1. **Faculties:**
+   This data table stores
+     - Faculty name
+     - Faculty email
+     - List of projects created
+   
+2. **Students:**
+   This data table stores
+     - Student name
+     - Student email
+     - CGPA
+     - Resume link
+     - List of applied projects
+   
+3. **Projects:**
+   This data table stores
+     - Project Title
+     - Project Description
+     - Faculty
+     - Status of Project (Open/Closed/Completed)
+     - Tags: Research Area
+     - Date Created
+     - GPSRN
+     - List of applied students
+   
 ## Conclusion
 
 The SOP/DOP/SAT Project Management System streamlines the process of managing academic projects, enhancing collaboration between faculty and students within the CSIS department.
