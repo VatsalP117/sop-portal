@@ -36,7 +36,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import withAuth from "@/app/withAuth";
 
+import { useState } from "react";
+import { toast } from "sonner";
+
 const Student = (props) => {
+  const [cgpa, setCgpa] = useState(8.0);
+  const [resume, setResume] = useState("");
+
   return (
     <div className="container flex h-[90vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
       <div className="student-data-section basis-1/4  flex flex-col gap-10">
@@ -70,17 +76,48 @@ const Student = (props) => {
                   <Label htmlFor="cgpa" className="text-right">
                     CGPA
                   </Label>
-                  <Input id="cgpa" defaultValue="8.00" className="col-span-3" />
+                  <Input
+                    id="cgpa"
+                    value={cgpa}
+                    className="col-span-3"
+                    onChange={(e) => {
+                      setCgpa(e.target.value);
+                    }}
+                  />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="username" className="text-right">
                     Resume
                   </Label>
-                  <Input id="resume" defaultValue="" className="col-span-3" />
+                  <Input
+                    id="resume"
+                    value={resume}
+                    className="col-span-3"
+                    onChange={(e) => {
+                      setResume(e.target.value);
+                    }}
+                  />
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit">Save changes</Button>
+                <Button onClick={async () => {
+                  const response = await fetch("/api/student/uploadstudentdetails", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    withCredentials: true,
+                    body: JSON.stringify({
+                      cgpa: cgpa,
+                      resume: resume,
+                    }),
+                  });
+                  if (response.status === 200) {
+                    toast("profile updated successfully")
+                  } else {
+                    toast("Profile update failed");
+                  }
+                }}>Save changes</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
@@ -122,6 +159,6 @@ const Student = (props) => {
       </div>
     </div>
   );
-}
+};
 
-export default withAuth(Student, 'student');
+export default withAuth(Student, "student");

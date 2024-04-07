@@ -101,4 +101,20 @@ const applyForProject = async (req,res) => {
     }
 }
 
-module.exports = {getStudentDetails,getAllprojects,getProjectDescrition,applyForProject}
+const uploadStudentDetails = async (req,res) => {
+    try {
+        const student = await Student.findById(req.user.mongoid);
+        if(!student){
+            return res.status(404).json({message: 'Student not found'});
+        }
+        student.cgpa = req.body.cgpa;
+        student.resume = req.body.resume;
+        await student.save();
+        return res.status(200).json({message: 'Student details updated successfully'});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = {getStudentDetails,getAllprojects,getProjectDescrition,applyForProject,uploadStudentDetails}
