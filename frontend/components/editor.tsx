@@ -1,5 +1,3 @@
-"use client";
-
 import "@blocknote/core/fonts/inter.css";
 import {
   BlockNoteView,
@@ -8,7 +6,7 @@ import {
   lightDefaultTheme,
 } from "@blocknote/react";
 import "@blocknote/react/style.css";
-import { useEffect, useState } from "react";
+//import { useEffect, useState } from "react";
 import { Block, BlockNoteEditor } from "@blocknote/core";
 import { useEditor } from "@tiptap/react";
 import { useTheme } from "next-themes";
@@ -19,7 +17,7 @@ export default function Editor(props) {
     theme.resolvedTheme == "dark" ? darkDefaultTheme : lightDefaultTheme;
 
   // Creates a new editor instance.
-  const [blocks, setBlocks] = useState<Block[]>([]);
+  // const [blocks, setBlocks] = useState<Block[]>([]);
 
   const editor: BlockNoteEditor = useCreateBlockNote({
     initialContent: props.initial,
@@ -33,8 +31,8 @@ export default function Editor(props) {
       className="-mt-3"
       theme={editorTheme}
       onChange={() => {
-        setBlocks(editor.document);
-        localStorage.setItem("blocks", JSON.stringify(editor.document));
+        //setBlocks(editor.document);
+        //localStorage.setItem("blocks", JSON.stringify(editor.document));
         props.setDescription(editor.document);
       }}
     />
