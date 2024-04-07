@@ -37,6 +37,7 @@ This web-based task management system facilitates the process of managing SOP/DO
   - Selecting Research Area: Students can choose their preferred research area.
   - Displaying Relevant Projects: Projects are dynamically filtered based on selected research areas.
   - Displaying Closed/Completed Projects of the faculties: Students can view the info for the closed/completed projects.
+  - Displaying Applied Projects and their status: Students can view the applied project's name and status. 
   - Applying to Projects: Students can apply to projects by clicking the Apply button.
 
 ### Faculty Accepting Student Request
