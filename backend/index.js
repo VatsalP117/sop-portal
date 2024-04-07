@@ -24,9 +24,9 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/auth', AuthRouter)
 
-app.use('/api/student',studentRouter)
+app.use('/api/student',studentMiddleware,studentRouter)
 
-app.use('/api/faculty',facultyRouter);
+app.use('/api/faculty',facultyMiddleware,facultyRouter);
 
 const PORT = process.env.PORT || 5000
 
