@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Form,
   FormControl,
@@ -61,7 +62,7 @@ const formSchema = z.object({
   project_title: z.string().min(5, {
     message: "Project Title must be at least 5 characters.",
   }),
-  tags: z.array(z.string()),
+  // tags: z.array(z.string()),
   status: z.string({ required_error: "A status is required." }),
   date: z.date({
     required_error: "A date is required.",
@@ -70,6 +71,7 @@ const formSchema = z.object({
 });
 
 export default function ProfileForm() {
+  const {toast} = useToast();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const handleSelectChange = (value: string) => {
     if (!selectedItems.includes(value)) {
@@ -95,8 +97,22 @@ export default function ProfileForm() {
     },
     mode: "onChange",
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    console.log(selectedItems);
+    const response:any = await fetch("/api/faculty/createproject",{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+      },
+      witthCredentials:true,
+      body:JSON.stringify({...values, tags:selectedItems}),
+    })
+    if(response.status === 200){
+      toast({title:"Success",description:"Project created successfully"});
+    } else {
+      toast({title:"Failure",description:"An error occured"});
+    }
   }
   return (
     <div className="container pt-12 flex flex-col">

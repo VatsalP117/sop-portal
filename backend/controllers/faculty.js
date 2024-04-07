@@ -54,6 +54,7 @@ const getProjectDescrition = (req,res) => {
 
 const createProject = async (req,res) => {
     try {
+        console.log(req.user)
         const title = req.body.project_title;
         const status = req.body.status;
         const date = req.body.date;

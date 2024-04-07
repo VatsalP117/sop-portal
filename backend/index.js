@@ -6,17 +6,21 @@ const studentRouter = require('./routes/student')
 const facultyRouter = require('./routes/faculty')
 const {studentMiddleware,facultyMiddleware} = require('./controllers/middleware')
 const session = require('express-session')
+const passport = require('passport')
 
 const app = express()
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
 }));
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/auth', AuthRouter)
 

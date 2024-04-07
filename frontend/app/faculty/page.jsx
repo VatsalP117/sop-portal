@@ -23,19 +23,22 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import Comp2 from "@/components/test-faculty/comp";
-export default function Faculty() {
+
+import withAuth from "@/app/withAuth";
+
+const Faculty = (props) => {
   return (
     <div className="container flex h-[90vh] w-screen flex-row py-8 md:gap-4 lg:gap-6">
       <div className="student-data-section basis-1/4  flex flex-col gap-10">
         <Card className="student-card flex flex-row items-center justify-center">
           <Avatar className="ml-6">
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarImage src={props.user.image} alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <CardHeader className="m-auto mr-4">
-            <CardTitle>Vatsal Patel</CardTitle>
+            <CardTitle>{props.user.name}</CardTitle>
             <CardDescription className="font-bold">
-              2021A7PS2460G
+              {props.user.email}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -95,3 +98,5 @@ export default function Faculty() {
     </div>
   );
 }
+
+export default withAuth(Faculty,"faculty");

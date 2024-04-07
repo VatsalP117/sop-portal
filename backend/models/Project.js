@@ -6,7 +6,7 @@ const ProjectSchema = new mongoose.Schema({
         required: true
     },
     description: {
-        type: String
+        type: Array,
     },
     faculty: {
         type: mongoose.Schema.Types.ObjectId,

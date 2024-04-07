@@ -14,6 +14,7 @@ const checkAuthentication = async (setUser,type) => {
         if(response.status === 200) {
             const user = await response.json();
             setUser(user);
+            console.log(user)
             if(user.type !== type) {
                 return false;
             }
@@ -35,12 +36,12 @@ const withAuth = (WrappedComponent,type) => {
         useEffect(() => {
             checkAuthentication(setUser,type).then((isAuthenticated) => {
                 if(!isAuthenticated) {
-                    router.push('/login');
+                    // router.push('/login');
                 } else {
                     setLoading(false);
                 }
             }).catch((err) => {
-                router.push('/login');
+                // router.push('/login');
             });
         },[]);
 
