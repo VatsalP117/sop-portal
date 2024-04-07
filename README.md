@@ -17,7 +17,7 @@
 
 ## Overview
 
-This web-based task management system facilitates the process of managing SOP/DOP/SAT projects within the Department of Computer Science & Information Systems (CSIS) at BITS (Birla Institute of Technology & Science)
+This web-based task management system facilitates the process of managing SOP/DOP/SAT projects within the Department of Computer Science & Information Systems (CSIS) at BITS (Birla Institute of Technology & Science) Pilani, K.K. Birla Goa Campus.
 
 ## Features
 
