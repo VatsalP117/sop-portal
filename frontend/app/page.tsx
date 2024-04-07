@@ -1,8 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MultiSelect from "@/components/multi-select";
 
+import { useRouter } from "next/navigation";
+
 const TagSelector = () => {
+
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/login')
+  },[])
+
   const [selectedTags, setSelectedTags] = useState([]);
 
   const options = [
@@ -17,14 +26,8 @@ const TagSelector = () => {
   };
 
   return (
-    <div>
-      <MultiSelect
-        values={[
-          { key: "Vatsal", value: "Vatsal" },
-          { key: "Patel", value: "Patel" },
-        ]}
-      />
-    </div>
+    <>
+    </>
   );
 };
 

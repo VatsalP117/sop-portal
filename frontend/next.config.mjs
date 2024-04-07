@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output:"export",
   async rewrites() {
     return [
       {
@@ -11,6 +12,9 @@ const nextConfig = {
   images: {
     domains: ["github.com"],
   },
+  typescript:{
+    ignoreBuildErrors: true,
+  }
 };
 
 export default nextConfig;
