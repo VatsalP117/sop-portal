@@ -3,7 +3,7 @@ const Faculty = require('../models/Faculty');
 const Project = require('../models/Project');
 const Student = require('../models/Student');
 
-const getProjects = async () => {
+const getProjects = async (req,res) => {
     try {
         const faculty = await Faculty.findById(req.user.mongoid).populate('projects');
         if (!faculty) {
@@ -13,7 +13,7 @@ const getProjects = async () => {
         const new_projects = projects.map((project)=>{
             return {
                 id: project._id,
-                project_title: project.title,
+                project_name: project.title,
                 status: project.status,
                 tags: project.tags.split(','),
                 professor: project.faculty.name,

@@ -108,103 +108,119 @@ const allTags = [
 
 async function getData(setData: any): Promise<Boolean> {
   // Fetch data from your API here.
-  setData([
-    {
-      id: "728ed52f",
-      project_name: "Rollator wala project",
-      professor: "Shubhangi DBMS wali",
-      tags: "Machine Learning, Software Development".split(", "),
-      status: "Open",
-    },
-    {
-      id: "729ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Open",
-    },
-    {
-      id: "730ed52f",
-      project_name: "HEL ka SOP lmao",
-      professor: "Shalini",
-      tags: "Listening, Speaking, B- lagega".split(", "),
-      status: "Open",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence, Software Development".split(
-        ", "
-      ),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
-    {
-      id: "731ed52f",
-      project_name: "Image processing",
-      professor: "RPJ",
-      tags: "Machine Learning, Artificial Intelligence".split(", "),
-      status: "Closed",
-    },
+  // setData([
+  //   {
+  //     id: "728ed52f",
+  //     project_name: "Rollator wala project",
+  //     professor: "Shubhangi DBMS wali",
+  //     tags: "Machine Learning, Software Development".split(", "),
+  //     status: "Open",
+  //   },
+  //   {
+  //     id: "729ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Open",
+  //   },
+  //   {
+  //     id: "730ed52f",
+  //     project_name: "HEL ka SOP lmao",
+  //     professor: "Shalini",
+  //     tags: "Listening, Speaking, B- lagega".split(", "),
+  //     status: "Open",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence, Software Development".split(
+  //       ", "
+  //     ),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
+  //   {
+  //     id: "731ed52f",
+  //     project_name: "Image processing",
+  //     professor: "RPJ",
+  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
+  //     status: "Closed",
+  //   },
 
-    // ...
-  ]);
+  //   // ...
+  // ]);
+
+  const response = await fetch("/api/faculty/getprojects",{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if(response.status === 200){
+    const data = await response.json();
+    setData(data);
+  } else {
+    console.log("Failed to fetch data");
+    return false;
+  }
+
   return true;
 }
 

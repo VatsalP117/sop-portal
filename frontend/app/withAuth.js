@@ -36,12 +36,12 @@ const withAuth = (WrappedComponent,type) => {
         useEffect(() => {
             checkAuthentication(setUser,type).then((isAuthenticated) => {
                 if(!isAuthenticated) {
-                    // router.push('/login');
+                    router.push('/login');
                 } else {
                     setLoading(false);
                 }
             }).catch((err) => {
-                // router.push('/login');
+                router.push('/login');
             });
         },[]);
 

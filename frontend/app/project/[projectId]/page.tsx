@@ -89,7 +89,11 @@ export default function ProfileForm() {
   };
   const values: ISelectProps["values"][0][] = [
     { key: "Software Development", value: "Software Development" },
-    { key: "ML", value: "ML" },
+    { key: "Machine Learning", value: "Machine Learning" },
+    { key: "Systems", value: "Systems" },
+    { key: "IOT", value: "IOT" },
+    { key: "Artificial Intelligence", value: "Artificial Intelligence" },
+    { key: "Miscellaneous", value: "Miscellaneous" },
   ];
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

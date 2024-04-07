@@ -24,7 +24,7 @@ const getAllprojects = async (req,res) => {
         const new_projects = projects.map((project)=>{
             return {
                 id: project._id,
-                project_title: project.title,
+                project_name: project.title,
                 status: project.status,
                 tags: project.tags.split(','),
                 professor: project.faculty.name,
