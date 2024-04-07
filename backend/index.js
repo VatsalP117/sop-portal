@@ -9,9 +9,10 @@ const session = require('express-session')
 const passport = require('passport')
 
 const cors = require('cors')
-app.use(cors())
 
 const app = express()
+
+app.use(cors())
 
 app.use(session({
     secret: 'keyboard cat',
