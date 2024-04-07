@@ -70,7 +70,7 @@ const applyForProject = async (req,res) => {
             return res.status(402).send('project id not found')
         }
 
-        const project = Project.findOne({_id:id})
+        const project = await Project.findOne({_id:id})
         if(!project){
             return res.status(404).send('project not found')
         }

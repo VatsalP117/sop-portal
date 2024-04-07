@@ -44,7 +44,7 @@ const getProjectDescrition = async (req,res) => {
             tags: project.tags.split(','),
             professor: project.faculty.name,
             date: project.date, 
-            description:project.description,
+            description:JSON.parse(project.description),
             gpsrn: project.gpsrn
         });
     } catch(error){
@@ -96,7 +96,7 @@ const editProject = async (req,res) => {
         const gpsrn = req.body.gpsrn;
         const description = req.body.description;
         const tags = req.body.tags;
-        const project = Project.findOne({_id:id});
+        const project = await Project.findOne({_id:id});
         if(!project){
             return res.status(404).send('project not found')
         }
@@ -117,7 +117,7 @@ const editProject = async (req,res) => {
 const deleteProject = async (req,res) => {
     try {
         const id = req.body.projectid;
-        const project = Project.findOne({_id:id});
+        const project = await Project.findOne({_id:id});
         if(!project){
             return res.status(404).send('project not found')
         }
@@ -134,11 +134,11 @@ const changeStudentStatus = async (req,res) => {
         const id = req.body.projectid;
         const studentid = req.body.studentid;
         const status = req.body.status;
-        const project = Project.findOne({_id:id});
+        const project = await Project.findOne({_id:id});
         if(!project){
             return res.status(404).send('project not found')
         }
-        const student = Student.findOne({_id:studentid});
+        const student = await Student.findOne({_id:studentid});
         if(!student){
             return res.status(404).send('student not found')
         }
@@ -162,7 +162,7 @@ const changeStudentStatus = async (req,res) => {
 const getProjectApplicants = async (req,res) => {
     try {
         const id = req.body.projectid;
-        const project = Project.findOne({_id:id}).populate('students');
+        const project = await Project.findOne({_id:id}).populate('students');
         if(!project){
             return res.status(404).send('project not found')
         }
