@@ -166,26 +166,99 @@ const changeStudentStatus = async (req, res) => {
 const getProjectApplicants = async (req, res) => {
   try {
     const id = req.body.projectid;
-    const project = await Project.findOne({ _id: id }).populate("students");
+    const project = await Project.findOne({ _id: id });
     if (!project) {
       return res.status(404).send("project not found");
     }
     const students = project.students;
-    const new_students = students.map((student) => {
-      return {
-        id: student._id,
+    const new_students = [];
+    for(let i=0;i<students.length;i++){
+      const student = await Student.findById(students[i].id);
+      new_students.push({
         name: student.name,
-        status: student.status,
         resume: student.resume,
-        cgpa: student.cgpa,
-      };
-    });
+        cgpa : Number(student.cgpa),
+        status: students[i].status,
+        id: student._id,
+        projectId: id,
+      });
+    }
     return res.status(200).json(new_students);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };
+
+const acceptStudent = async (req, res) => {
+  try {
+    const id = req.body.projectid;
+    const studentid = req.body.studentid;
+    const project = await Project.findById(id);
+    if (!project) {
+      return res.status(404).send("project not found");
+    }
+    const student = await Student.findById(studentid);
+    if (!student) {
+      return res.status(404).send("student not found");
+    }
+    const student_index = project.students.findIndex((student) => {
+      return student.id == studentid;
+    });
+    if (student_index == -1) {
+      return res.status(404).send("student not found in project");
+    }
+    project.students[student_index].status = "Accepted";
+    await project.save();
+    const project_index = student.projects.findIndex((project) => {
+      return project.id == id;
+    });
+    if (project_index == -1) {
+      return res.status(404).send("project not found in student");
+    }
+    student.projects[project_index].status = "Accepted";
+    await student.save();
+    return res.status(200).json({ message: "Student accepted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+const rejectStudent = async (req, res) => {
+  try {
+    const id = req.body.projectid;
+    const studentid = req.body.studentid;
+    const project = await Project.findById(id);
+    if (!project) {
+      return res.status(404).send("project not found");
+    }
+    const student = await Student.findById(studentid);
+    if (!student) {
+      return res.status(404).send("student not found");
+    }
+    const student_index = project.students.findIndex((student) => {
+      return student.id == studentid;
+    });
+    if (student_index == -1) {
+      return res.status(404).send("student not found");
+    }
+    project.students[student_index].status = "Rejected";
+    await project.save();
+    const project_index = student.projects.findIndex((project) => {
+      return project.id == id;
+    });
+    if (project_index == -1) {
+      return res.status(404).send("project not found");
+    }
+    student.projects[project_index].status = "Rejected";
+    await student.save();
+    return res.status(200).json({ message: "Student rejected successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+}
 
 module.exports = {
   getProjects,
@@ -195,4 +268,6 @@ module.exports = {
   deleteProject,
   changeStudentStatus,
   getProjectApplicants,
+  acceptStudent,
+  rejectStudent
 };

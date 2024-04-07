@@ -32,14 +32,17 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { toast } from "@/components/ui/use-toast";
 import Editor from "@/components/student_editor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { Textarea } from "@/components/ui/textarea";
 
+import { toast } from "sonner";
+
 import { useEffect, useState } from "react";
+
+import {useRouter} from 'next/navigation'
 
 const statuses = [
   { label: "Open", value: "Open" },
@@ -48,40 +51,42 @@ const statuses = [
 ] as const;
 
 const formSchema = z.object({
-  project_title: z.string().min(5, {
-    message: "Project Title must be at least 5 characters.",
-  }),
-  tags: z.array(z.string()),
-  status: z.string({ required_error: "A status is required." }),
-  date: z.string(),
-  gpsrn: z.string(),
+  // project_title: z.string().min(5, {
+  //   message: "Project Title must be at least 5 characters.",
+  // }),
+  // tags: z.array(z.string()),
+  // status: z.string({ required_error: "A status is required." }),
+  // date: z.string(),
+  // gpsrn: z.string(),
 });
 const formSchema2 = z.object({
-  comments: z.string().min(10, {
-    message: "Comments must be at least 10 characters.",
-  }),
+  // comments: z.string().min(10, {
+  //   message: "Comments must be at least 10 characters.",
+  // }),
 });
 
 export default function ProfileForm(props) {
-  const [projectDetails,setProjectDetails] = useState({});
+  const [projectDetails, setProjectDetails] = useState({});
+
+  const router = useRouter();
 
   useEffect(() => {
-    const response = fetch('/api/student/getprojectdescription',{
-      method: 'POST',
+    const response = fetch("/api/student/getprojectdescription", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify({
+      body: JSON.stringify({
         projectid: props.params.projectId,
       }),
       withCredentials: true,
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      setProjectDetails(data);
-    })
-  },[]);
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setProjectDetails(data);
+      });
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,8 +95,28 @@ export default function ProfileForm(props) {
     },
     mode: "onChange",
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // console.log(values);
+    // try {
+    //   const response: any = await fetch("/api/student/applyproject", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       projectid: props.params.projectId,
+    //     }),
+    //     withCredentials: true,
+    //   });
+    //   if (response.status === 200) {
+    //     toast("Successfully applied to project");
+    //   } else {
+    //     toast("Failed to apply to project");
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    //   toast("Failed to apply to project");
+    // }
   }
   const form2 = useForm<z.infer<typeof formSchema2>>({
     resolver: zodResolver(formSchema2),
@@ -164,22 +189,56 @@ export default function ProfileForm(props) {
           <div className="flex flex-col gap-3">
             <FormLabel>Tags</FormLabel>
             <div className="flex flex-row gap-2">
-              {projectDetails.tags && projectDetails.tags.map((item) => (
-                <Badge>{item}</Badge>
-              ))}
+              {projectDetails.tags &&
+                projectDetails.tags.map((item) => <Badge>{item}</Badge>)}
             </div>
           </div>
           <h3>Project Description</h3>
-          {projectDetails.description && <Editor
-            editable={false}
-            initial={projectDetails.description?projectDetails.description:[{
-              type: "paragraph",
-              content:"No description available."
-            }]}
-          />}
+          {projectDetails.description && (
+            <Editor
+              editable={false}
+              initial={
+                projectDetails.description
+                  ? projectDetails.description
+                  : [
+                      {
+                        type: "paragraph",
+                        content: "No description available.",
+                      },
+                    ]
+              }
+            />
+          )}
+          <Button
+            onClick={async() => {
+              try {
+                const response: any = await fetch("/api/student/applyforproject", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    projectid: props.params.projectId,
+                  }),
+                  withCredentials: true,
+                });
+                if (response.status === 200) {
+                  toast("Successfully applied to project");
+                  router.push('/student');
+                } else {
+                  toast("Failed to apply to project");
+                }
+              } catch (err) {
+                console.log(err);
+                toast("Failed to apply to project");
+              }
+            }}
+          >
+            Apply
+          </Button>
         </form>
       </Form>
-      <Form {...form2}>
+      {/* <Form {...form2}>
         <form
           onSubmit={form2.handleSubmit(onSubmit)}
           className="w-2/3 space-y-6 mt-6"
@@ -206,8 +265,8 @@ export default function ProfileForm(props) {
             )}
           />
           <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+        </form> */}
+      {/* </Form> */}
     </div>
   );
 }

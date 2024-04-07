@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Icons } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ModeToggle from "@/components/mode-toggle";
@@ -40,7 +40,27 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const Student = (props) => {
-  const [cgpa, setCgpa] = useState(8.0);
+
+  const [studentDetails, setStudentDetails] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/student/getstudentprojects',{
+      method:'GET',
+      withCredentials:true,
+    }).then((response)=>{
+      if(response.status === 200){
+        response.json().then((data)=>{
+          setStudentDetails(data);
+          console.log(data);
+        })
+      }
+      else {
+        toast("Failed to fetch student details")
+      }
+    })
+  },[]);
+
+  const [cgpa, setCgpa] = useState();
   const [resume, setResume] = useState("");
 
   return (
@@ -83,6 +103,10 @@ const Student = (props) => {
                     onChange={(e) => {
                       setCgpa(e.target.value);
                     }}
+                    type={"number"}
+                    step={0.01}
+                    min={0}
+                    max={10}
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -101,6 +125,10 @@ const Student = (props) => {
               </div>
               <DialogFooter>
                 <Button onClick={async () => {
+                  if(cgpa>10 || cgpa<0 || resume.length<1){
+                    toast("Invalid CGPA or Resume Link")
+                    return
+                  }
                   const response = await fetch("/api/student/uploadstudentdetails", {
                     method: "POST",
                     headers: {
@@ -133,7 +161,7 @@ const Student = (props) => {
             <CardTitle>Projects Applied</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="flex flex-row items-center justify-start ">
+            {/* <div className="flex flex-row items-center justify-start ">
               <CardDescription className="basis-1/2">
                 Project Title
               </CardDescription>
@@ -150,7 +178,18 @@ const Student = (props) => {
                 Project Title
               </CardDescription>
               <Badge variant="destructive">Rejected</Badge>
-            </div>
+            </div> */}
+            {studentDetails.map((project) => {
+              const variant= project.status === "Accepted" ? "default" : project.status === "Rejected" ? "destructive" : "outine";
+              return (
+                <div className="flex flex-row items-center justify-start ">
+                  <CardDescription className="basis-1/2">
+                    {project.title}
+                  </CardDescription>
+                  <Badge variant={variant}> {project.status}</Badge>
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
       </div>

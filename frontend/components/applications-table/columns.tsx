@@ -4,24 +4,37 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Application = {
   //   id: string;
-  student_name: string;
-  student_id: string;
+  name: string;
   cgpa: number;
   status: string;
+  id: string;
+  resume: string;
+  projectId: string;
 };
 
 export const columns: ColumnDef<Application>[] = [
   {
-    accessorKey: "student_name",
+    accessorKey: "name",
     header: "Student Name",
   },
   {
-    accessorKey: "student_id",
-    header: "BITS Id",
+    accessorKey: "projectId",
+    header: "",
+    cell: ({ row }) => {
+      return (<></>)
+    }
+  },
+  {
+    accessorKey: "id",
+    header: "",
+    cell: ({ row }) => {
+      return (<></>)
+    }
   },
   {
     accessorKey: "cgpa",
@@ -39,10 +52,23 @@ export const columns: ColumnDef<Application>[] = [
     },
   },
   {
+    accessorKey: "resume",
+    header:"",
+    cell: ({ row }) => {
+      return (
+          <Button onClick={()=>{
+            window.open(row.getValue("resume"), "_blank");
+          }}>View Resume</Button>
+      );
+    },
+  },
+  {
     accessorKey: "status",
     header: "Application Status",
     cell: ({ row }) => {
-      //console.log(row.getValue("tags"));
+      console.log(row.getValue("projectId"));
+      const projectId=row.getValue("projectId");
+      const studentId=row.getValue("id");
       if (row.getValue("status") === "Accepted") {
         return (
           <div className="flex space-x-2">
@@ -63,8 +89,44 @@ export const columns: ColumnDef<Application>[] = [
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate  flex flex-row gap-4 flex-wrap">
-              <Button size="sm">Accept</Button>
-              <Button size="sm">Reject</Button>
+              <Button size="sm" onClick={async ()=>{
+                fetch(`/api/faculty/acceptstudent`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    projectid: projectId,
+                    studentid: studentId
+                  }),
+                  withCredentials: true,
+                }).then((response) => {
+                  if(response.status===200){
+                    window.location.reload();
+                  } else {
+                    alert("Error in accepting student");
+                  }
+                })
+              }}>Accept</Button>
+              <Button size="sm" onClick={()=>{
+                fetch(`/api/faculty/rejectstudent`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    projectid: projectId,
+                    studentid: studentId
+                  }),
+                  withCredentials: true,
+                }).then((response) => {
+                  if(response.status===200){
+                    window.location.reload();
+                  } else {
+                    alert("Error in rejecting student");
+                  }
+                })
+              }}>Reject</Button>
             </span>
           </div>
         );

@@ -80,16 +80,24 @@ const applyForProject = async (req,res) => {
             return res.status(404).send('student not found')
         }
 
+        //check if student already applied for given project
+        const applied = student.projects.find((project)=>{
+            return project.id == id;
+        })
+        if(applied){
+            return res.status(400).send('Student already applied for this project');
+        }
+
         const new_project = {
             id: project._id,
-            status: 'pending'
+            status: 'Pending'
         }
         student.projects.push(new_project);
         await student.save();
 
         const new_student = {
             id: student._id,
-            status: 'pending'
+            status: 'Pending'
         }
         project.students.push(new_student);
         await project.save();
@@ -117,4 +125,29 @@ const uploadStudentDetails = async (req,res) => {
     }
 }
 
-module.exports = {getStudentDetails,getAllprojects,getProjectDescrition,applyForProject,uploadStudentDetails}
+const getStudentProjects = async (req,res) => {
+    try {
+        const student = await Student.findById(req.user.mongoid);
+        if(!student){
+            return res.status(404).json({message: 'Student not found'});
+        }
+        const projects = student.projects;
+        if(!projects){
+            return res.status(404).json({message: 'No projects found'});
+        }
+        const new_projects = []
+        for(let i=0;i<projects.length;i++){
+            const project_obj = await Project.findById(projects[i].id);
+            new_projects.push({
+                title: project_obj.title,
+                status: projects[i].status
+            })
+        }
+        return res.status(200).json(new_projects);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = {getStudentDetails,getAllprojects,getProjectDescrition,applyForProject,uploadStudentDetails,getStudentProjects}

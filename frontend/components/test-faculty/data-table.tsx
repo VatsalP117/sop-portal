@@ -28,10 +28,12 @@ interface DataTableProps<TData, TValue> {
 }
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const router=useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
@@ -110,7 +112,7 @@ export function DataTable<TData, TValue>({
                       <Link href={`/project/${row.original.id}`}>Edit</Link>
                     </Button>
                   </TableCell>
-                  <TableCell onClick={() => console.log(row.original)}>
+                  <TableCell onClick={() =>router.push(`/applications/${row.original.id}`)}>
                     <Button variant="secondary">View Applications</Button>
                   </TableCell>
                 </TableRow>

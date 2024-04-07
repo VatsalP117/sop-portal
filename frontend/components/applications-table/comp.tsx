@@ -106,39 +106,54 @@ const allTags = [
   "Misc",
 ];
 
-async function getData(setData: any): Promise<Boolean> {
+async function getData(setData: any, projectId: any): Promise<Boolean> {
   // Fetch data from your API here.
-  setData([
-    {
-      student_name: "Vatsal Patel",
-      student_id: "2021A7PS2460G",
-      cgpa: 8.33,
-      status: "Accepted",
+  fetch("/api/faculty/getprojectapplicants", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-    {
-      student_name: "Ruchik Bakhai",
-      student_id: "2021A7PS2054G",
-      cgpa: 9.12,
-      status: "Accepted",
-    },
-    {
-      student_name: "Sharad Arora",
-      student_id: "2021A7PS1427G",
-      cgpa: 7.25,
-      status: "Rejected",
-    },
-    {
-      student_name: "Shubh Agarwal",
-      student_id: "2021A7PS0001G",
-      cgpa: 7.28,
-      status: "Pending",
-    },
-    // ...
-  ]);
+    body: JSON.stringify({
+      projectid: projectId,
+    }),
+    withCredentials: true,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setData(data);
+    });
+  // setData([
+  //   {
+  //     student_name: "Vatsal Patel",
+  //     student_id: "2021A7PS2460G",
+  //     cgpa: 8.33,
+  //     status: "Accepted",
+  //   },
+  //   {
+  //     student_name: "Ruchik Bakhai",
+  //     student_id: "2021A7PS2054G",
+  //     cgpa: 9.12,
+  //     status: "Accepted",
+  //   },
+  //   {
+  //     student_name: "Sharad Arora",
+  //     student_id: "2021A7PS1427G",
+  //     cgpa: 7.25,
+  //     status: "Rejected",
+  //   },
+  //   {
+  //     student_name: "Shubh Agarwal",
+  //     student_id: "2021A7PS0001G",
+  //     cgpa: 7.28,
+  //     status: "Pending",
+  //   },
+  //   // ...
+  // ]);
   return true;
 }
 
-export default function Comp() {
+export default function Comp({ projectId }: any) {
   const [data, setData] = useState([]);
   const [ogData, setOgData] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -147,7 +162,7 @@ export default function Comp() {
   const [onlyOpen, setOnlyOpen] = useState(false);
   const [value, setValue] = useState("All Tags");
   useEffect(() => {
-    getData(setOgData);
+    getData(setOgData, projectId);
   }, []);
   // useEffect(() => {
   //   if (ogData.length > 0) setData(ogData);
