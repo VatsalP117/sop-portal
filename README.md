@@ -17,7 +17,7 @@
 
 ## Overview
 
-This web-based task management system facilitates the process of managing SOP/DOP/SAT projects within the Department of Computer Science & Information Systems (CSIS) at BITS (Birla Institute of Technology & Science)
+This web-based task management system facilitates the process of managing SOP/DOP/SAT projects within the Department of Computer Science & Information Systems (CSIS) at BITS (Birla Institute of Technology & Science) Pilani, K.K. Birla Goa Campus.
 
 ## Features
 
@@ -37,6 +37,7 @@ This web-based task management system facilitates the process of managing SOP/DO
   - Selecting Research Area: Students can choose their preferred research area.
   - Displaying Relevant Projects: Projects are dynamically filtered based on selected research areas.
   - Displaying Closed/Completed Projects of the faculties: Students can view the info for the closed/completed projects.
+  - Displaying Applied Projects and their status: Students can view the applied project's name and status. 
   - Applying to Projects: Students can apply to projects by clicking the Apply button.
 
 ### Faculty Accepting Student Request
@@ -44,9 +45,36 @@ This web-based task management system facilitates the process of managing SOP/DO
 - **Accessing Student Applications:** Faculty can view applications from students.
 - **Viewing Student Applications:** Faculty can review student applications.
 - **Sorting Applications by CGPA:** Applications can be sorted based on students' CGPA.
-- **Reviewing Student Applications:** Faculty can evaluate student applications.
-- **Providing Feedback:** Faculty can provide feedback and mark application status.
+- **Reviewing Student Applications:** Faculty can evaluate student applications through their linked resume.
+- **Application Status:** Faculty can mark the student's application status.
 
+## Database Tables
+
+1. **Faculties:**
+   This data table stores
+     - Faculty name
+     - Faculty email
+     - List of projects created
+   
+2. **Students:**
+   This data table stores
+     - Student name
+     - Student email
+     - CGPA
+     - Resume link
+     - List of applied projects
+   
+3. **Projects:**
+   This data table stores
+     - Project Title
+     - Project Description
+     - Faculty
+     - Status of Project (Open/Closed/Completed)
+     - Tags: Research Area
+     - Date Created
+     - GPSRN
+     - List of applied students
+   
 ## Conclusion
 
 The SOP/DOP/SAT Project Management System streamlines the process of managing academic projects, enhancing collaboration between faculty and students within the CSIS department.
