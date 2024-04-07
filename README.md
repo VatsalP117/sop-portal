@@ -1,14 +1,15 @@
 # SOP Portal
+### HACKENZA 2023-24 Sem II
 >By Team SemBack
 
 <hr>
 
 |Name|BITSid|
 |----|------|
-|Nikhil Kudva|2021A7PS2409G|
-|Ruchik Bakhai|2021A7PS2054G|
-|Shubh Agarwal|2021AAPS2770G|
-|Vatsal Patel|2021A7PS2460G|
+|[Nikhil Kudva](https://www.linkedin.com/in/nikhil-kudva-3a42bb239/)|2021A7PS2409G|
+|[Ruchik Bakhai](https://www.linkedin.com/in/ruchik-bakhai/)|2021A7PS2054G|
+|[Shubh Agarwal](https://www.linkedin.com/in/iamshubhagarwal/)|2021AAPS2770G|
+|[Vatsal Patel](https://www.linkedin.com/in/vatsal-patel1/)|2021A7PS2460G|
 
 <hr>
 
@@ -30,7 +31,7 @@ This web-based task management system facilitates the process of managing SOP/DO
 
 - **Student View and Applying for Projects:**
   - User Authentication: Students can securely log in to the portal.
-  - Updating Profile: Students can update their profile by updating their CGPA & Resume.
+  - Updating Profile: Students can update their profile by updating their CGPA & Resume(through a link).
   - Accessing SOP/DOP/SAT Projects: Students can browse available projects.
   - Displaying Faculty and Advertisements: Showcase faculty and project advertisements.
   - Selecting Research Area: Students can choose their preferred research area.
