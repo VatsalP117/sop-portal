@@ -1,19 +1,4 @@
 # SOP Portal
-### HACKENZA 2023-24 Sem II
->By Team SemBack
-
-<hr>
-
-|Name|BITSid|
-|----|------|
-|[Nikhil Kudva](https://www.linkedin.com/in/nikhil-kudva-3a42bb239/)|2021A7PS2409G|
-|[Ruchik Bakhai](https://www.linkedin.com/in/ruchik-bakhai/)|2021A7PS2054G|
-|[Shubh Agarwal](https://www.linkedin.com/in/iamshubhagarwal/)|2021AAPS2770G|
-|[Vatsal Patel](https://www.linkedin.com/in/vatsal-patel1/)|2021A7PS2460G|
-
-<hr>
-
-## [Problem Statement](https://docs.google.com/document/d/19SuRrZRu9lVcL61EMlKiNf8ZXJFisy8y3PxHM8UbFbc/edit#heading=h.4ry0k29a6lde)
 
 ## Overview
 
