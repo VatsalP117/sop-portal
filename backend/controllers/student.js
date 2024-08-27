@@ -1,9 +1,34 @@
-
 const { Op } = require("sequelize");
+const nodemailer = require("nodemailer");
 const Faculty = require("../models/Faculty");
 const Project = require("../models/Project");
 const Student = require("../models/Student");
 const ProjectStudent = require("../models/ProjectStudent");
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+function sendMail(to, project_code, project_title) {
+  const mailOptions = {
+    from: "csistest0@gmail.com",
+    to: to,
+    subject: "Your project has a new application",
+    text: `Your project ${project_title} (${project_code}) has a new application. Please review it.`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email: ", error);
+    } else {
+      console.log("Email sent: ", info.response);
+    }
+  });
+}
 const getStudentDetails = async (req, res) => {
   try {
     const student = await Student.findByPk(req.user.id);
@@ -117,7 +142,12 @@ const applyForProject = async (req, res) => {
       studentId: student.id,
       status: "Pending",
     });
-
+    //sendMail(student.email, project.gpsrn, project.title);
+    //sendmail to faculty of the project
+    // console.log(project);
+    const faculty = await Faculty.findByPk(project.facultyId);
+    // console.log(faculty);
+    sendMail(faculty.email, project.gpsrn, project.title);
     return res.status(200).send("Applied for project successfully");
   } catch (error) {
     console.log(error);

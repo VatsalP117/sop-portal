@@ -3,7 +3,34 @@ const Faculty = require("../models/Faculty");
 const Project = require("../models/Project");
 const Student = require("../models/Student");
 const ProjectStudent = require("../models/ProjectStudent");
-
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+const acceptance_text = "Your application has been accepted.";
+const rejection_text = "Your application has been rejected.";
+function sendMail(to, text, project_code, project_title) {
+  const mailOptions = {
+    from: "csistest0@gmail.com",
+    to: to,
+    subject: "Your project application has been reviewed.",
+    text: `Regarding your application for project ${project_title} (${project_code}).${text}`,
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email: ", error);
+    } else {
+      console.log("Email sent: ", info.response);
+    }
+  });
+}
 const getProjects = async (req, res) => {
   try {
     const faculty = await Faculty.findByPk(req.user.id, {
@@ -185,6 +212,8 @@ const getProjectApplicants = async (req, res) => {
 const acceptStudent = async (req, res) => {
   try {
     const { projectid, studentid } = req.body;
+    const student = await Student.findByPk(studentid);
+    const project = await Project.findByPk(projectid);
     const projectStudent = await ProjectStudent.findOne({
       where: {
         projectId: projectid,
@@ -195,6 +224,7 @@ const acceptStudent = async (req, res) => {
       return res.status(404).send("project-student association not found");
     }
     await projectStudent.update({ status: "Accepted" });
+    sendMail(student.email, acceptance_text, project.gpsrn, project.title);
     return res.status(200).json({ message: "Student accepted successfully" });
   } catch (error) {
     console.log(error);
@@ -205,6 +235,8 @@ const acceptStudent = async (req, res) => {
 const rejectStudent = async (req, res) => {
   try {
     const { projectid, studentid } = req.body;
+    const student = await Student.findByPk(studentid);
+    const project = await Project.findByPk(projectid);
     const projectStudent = await ProjectStudent.findOne({
       where: {
         projectId: projectid,
@@ -215,6 +247,7 @@ const rejectStudent = async (req, res) => {
       return res.status(404).send("project-student association not found");
     }
     await projectStudent.update({ status: "Rejected" });
+    sendMail(student.email, rejection_text, project.gpsrn, project.title);
     return res.status(200).json({ message: "Student rejected successfully" });
   } catch (error) {
     console.log(error);
