@@ -1,23 +1,31 @@
-const mongoose = require('mongoose');
+const { DataTypes, Model } = require("sequelize");
 
-const FacultySchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    name: {
-        type: String
-    },
-    description: {
-        type: String
-    },
-    projects: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Project'
-    },
-});
+class Faculty extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        email: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true,
+        },
+        name: {
+          type: DataTypes.STRING,
+        },
+        description: {
+          type: DataTypes.TEXT,
+        },
+      },
+      {
+        sequelize,
+        modelName: "Faculty",
+      }
+    );
+  }
 
-const Faculty = mongoose.model('Faculty', FacultySchema);
+  static associate(models) {
+    this.hasMany(models.Project, { foreignKey: "facultyId", as: "projects" });
+  }
+}
 
 module.exports = Faculty;

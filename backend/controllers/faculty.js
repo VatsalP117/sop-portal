@@ -1,24 +1,29 @@
-const { get } = require("mongoose");
+const { Op } = require("sequelize");
 const Faculty = require("../models/Faculty");
 const Project = require("../models/Project");
 const Student = require("../models/Student");
+const ProjectStudent = require("../models/ProjectStudent");
 
 const getProjects = async (req, res) => {
   try {
-    const faculty = await Faculty.findById(req.user.mongoid).populate(
-      "projects"
-    );
+    const faculty = await Faculty.findByPk(req.user.id, {
+      include: [
+        {
+          model: Project,
+          as: "projects",
+        },
+      ],
+    });
     if (!faculty) {
       return res.status(404).json({ message: "Faculty not found" });
     }
-    const projects = faculty.projects;
-    const new_projects = projects.map((project) => {
+    const new_projects = faculty.projects.map((project) => {
       return {
-        id: project._id,
+        id: project.id,
         project_name: project.title,
         status: project.status,
         tags: project.tags.split(","),
-        professor: project.faculty.name,
+        professor: faculty.name,
       };
     });
     return res.status(200).json(new_projects);
@@ -28,19 +33,26 @@ const getProjects = async (req, res) => {
   }
 };
 
-const getProjectDescrition = async (req, res) => {
+const getProjectDescription = async (req, res) => {
   try {
     console.log(req.body);
     const id = req.body.projectid;
     if (!id) {
       return res.status(402).json({ message: "project id not found" });
     }
-    const project = await Project.findOne({ _id: id });
+    const project = await Project.findByPk(id, {
+      include: [
+        {
+          model: Faculty,
+          as: "faculty",
+        },
+      ],
+    });
     if (!project) {
       return res.status(404).json({ message: "project not found" });
     }
     return res.status(200).json({
-      id: project._id,
+      id: project.id,
       project_title: project.title,
       status: project.status,
       tags: project.tags.split(","),
@@ -58,30 +70,21 @@ const getProjectDescrition = async (req, res) => {
 const createProject = async (req, res) => {
   try {
     console.log(req.body);
-    const title = req.body.project_title;
-    const status = req.body.status;
-    const date = req.body.date;
-    const gpsrn = req.body.gpsrn;
-    const description = req.body.description;
-    const tags = req.body.tags;
-    const faculty = await Faculty.findById(req.user.mongoid);
+    const { project_title, status, date, gpsrn, description, tags } = req.body;
+    const faculty = await Faculty.findByPk(req.user.id);
 
     if (!faculty) {
       return res.status(404).send("faculty not found");
     }
-    const new_project = new Project({
-      title: title,
+    const new_project = await Project.create({
+      title: project_title,
       description: JSON.stringify(description),
-      faculty: faculty._id,
+      facultyId: faculty.id,
       tags: tags.join(","),
-      date: date,
-      status: status,
-      date: date,
-      gpsrn: gpsrn,
+      date,
+      status,
+      gpsrn,
     });
-    const saved_project = await new_project.save();
-    faculty.projects.push(saved_project._id);
-    await faculty.save();
     return res.status(200).json({ message: "Project created successfully" });
   } catch (error) {
     console.log(error);
@@ -91,24 +94,20 @@ const createProject = async (req, res) => {
 
 const editProject = async (req, res) => {
   try {
-    const id = req.body.projectid;
-    const title = req.body.project_title;
-    const status = req.body.status;
-    const date = req.body.date;
-    const gpsrn = req.body.gpsrn;
-    const description = req.body.description;
-    const tags = req.body.tags;
-    const project = await Project.findOne({ _id: id });
+    const { projectid, project_title, status, date, gpsrn, description, tags } =
+      req.body;
+    const project = await Project.findByPk(projectid);
     if (!project) {
       return res.status(404).send("project not found");
     }
-    project.title = title;
-    project.description = JSON.stringify(description);
-    project.tags = tags.join(",");
-    project.date = date;
-    project.status = status;
-    project.gpsrn = gpsrn;
-    await project.save();
+    await project.update({
+      title: project_title,
+      description: JSON.stringify(description),
+      tags: tags.join(","),
+      date,
+      status,
+      gpsrn,
+    });
     return res.status(200).json({ message: "Project edited successfully" });
   } catch (error) {
     console.log(error);
@@ -119,11 +118,11 @@ const editProject = async (req, res) => {
 const deleteProject = async (req, res) => {
   try {
     const id = req.body.projectid;
-    const project = await Project.findOne({ _id: id });
+    const project = await Project.findByPk(id);
     if (!project) {
       return res.status(404).send("project not found");
     }
-    await Project.deleteOne({ _id: id });
+    await project.destroy();
     return res.status(200).json({ message: "Project deleted successfully" });
   } catch (error) {
     console.log(error);
@@ -133,27 +132,17 @@ const deleteProject = async (req, res) => {
 
 const changeStudentStatus = async (req, res) => {
   try {
-    const id = req.body.projectid;
-    const studentid = req.body.studentid;
-    const status = req.body.status;
-    const project = await Project.findOne({ _id: id });
-    if (!project) {
-      return res.status(404).send("project not found");
-    }
-    const student = await Student.findOne({ _id: studentid });
-    if (!student) {
-      return res.status(404).send("student not found");
-    }
-    const student_index = project.students.findIndex((student) => {
-      return student.id == studentid;
+    const { projectid, studentid, status } = req.body;
+    const projectStudent = await ProjectStudent.findOne({
+      where: {
+        projectId: projectid,
+        studentId: studentid,
+      },
     });
-    project.students[student_index].status = status;
-    await project.save();
-    const project_index = student.projects.findIndex((project) => {
-      return project.id == id;
-    });
-    student.projects[project_index].status = status;
-    await student.save();
+    if (!projectStudent) {
+      return res.status(404).send("project-student association not found");
+    }
+    await projectStudent.update({ status });
     return res
       .status(200)
       .json({ message: "Student status changed successfully" });
@@ -166,23 +155,26 @@ const changeStudentStatus = async (req, res) => {
 const getProjectApplicants = async (req, res) => {
   try {
     const id = req.body.projectid;
-    const project = await Project.findOne({ _id: id });
+    const project = await Project.findByPk(id, {
+      include: [
+        {
+          model: Student,
+          as: "students",
+          through: { attributes: ["status"] },
+        },
+      ],
+    });
     if (!project) {
       return res.status(404).send("project not found");
     }
-    const students = project.students;
-    const new_students = [];
-    for(let i=0;i<students.length;i++){
-      const student = await Student.findById(students[i].id);
-      new_students.push({
-        name: student.name,
-        resume: student.resume,
-        cgpa : Number(student.cgpa),
-        status: students[i].status,
-        id: student._id,
-        projectId: id,
-      });
-    }
+    const new_students = project.students.map((student) => ({
+      name: student.name,
+      resume: student.resume,
+      cgpa: Number(student.cgpa),
+      status: student.ProjectStudent.status,
+      id: student.id,
+      projectId: id,
+    }));
     return res.status(200).json(new_students);
   } catch (error) {
     console.log(error);
@@ -192,82 +184,52 @@ const getProjectApplicants = async (req, res) => {
 
 const acceptStudent = async (req, res) => {
   try {
-    const id = req.body.projectid;
-    const studentid = req.body.studentid;
-    const project = await Project.findById(id);
-    if (!project) {
-      return res.status(404).send("project not found");
-    }
-    const student = await Student.findById(studentid);
-    if (!student) {
-      return res.status(404).send("student not found");
-    }
-    const student_index = project.students.findIndex((student) => {
-      return student.id == studentid;
+    const { projectid, studentid } = req.body;
+    const projectStudent = await ProjectStudent.findOne({
+      where: {
+        projectId: projectid,
+        studentId: studentid,
+      },
     });
-    if (student_index == -1) {
-      return res.status(404).send("student not found in project");
+    if (!projectStudent) {
+      return res.status(404).send("project-student association not found");
     }
-    project.students[student_index].status = "Accepted";
-    await project.save();
-    const project_index = student.projects.findIndex((project) => {
-      return project.id == id;
-    });
-    if (project_index == -1) {
-      return res.status(404).send("project not found in student");
-    }
-    student.projects[project_index].status = "Accepted";
-    await student.save();
+    await projectStudent.update({ status: "Accepted" });
     return res.status(200).json({ message: "Student accepted successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error.message });
   }
-}
+};
 
 const rejectStudent = async (req, res) => {
   try {
-    const id = req.body.projectid;
-    const studentid = req.body.studentid;
-    const project = await Project.findById(id);
-    if (!project) {
-      return res.status(404).send("project not found");
-    }
-    const student = await Student.findById(studentid);
-    if (!student) {
-      return res.status(404).send("student not found");
-    }
-    const student_index = project.students.findIndex((student) => {
-      return student.id == studentid;
+    const { projectid, studentid } = req.body;
+    const projectStudent = await ProjectStudent.findOne({
+      where: {
+        projectId: projectid,
+        studentId: studentid,
+      },
     });
-    if (student_index == -1) {
-      return res.status(404).send("student not found");
+    if (!projectStudent) {
+      return res.status(404).send("project-student association not found");
     }
-    project.students[student_index].status = "Rejected";
-    await project.save();
-    const project_index = student.projects.findIndex((project) => {
-      return project.id == id;
-    });
-    if (project_index == -1) {
-      return res.status(404).send("project not found");
-    }
-    student.projects[project_index].status = "Rejected";
-    await student.save();
+    await projectStudent.update({ status: "Rejected" });
     return res.status(200).json({ message: "Student rejected successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error.message });
   }
-}
+};
 
 module.exports = {
   getProjects,
-  getProjectDescrition,
+  getProjectDescription,
   createProject,
   editProject,
   deleteProject,
   changeStudentStatus,
   getProjectApplicants,
   acceptStudent,
-  rejectStudent
+  rejectStudent,
 };

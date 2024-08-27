@@ -1,38 +1,46 @@
-const mongoose = require('mongoose');
+const { DataTypes, Model } = require("sequelize");
 
-const ProjectSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-    },
-    faculty: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Faculty'
-    },
-    students: {
-        type: [{
-            id:{type:mongoose.Schema.Types.ObjectId,ref:'Student'},
-            status: String,
-        }]
-    },
-    status: {
-        type: String,
-        default: 'pending'
-    },
-    tags : {
-        type: String,
-    },
-    date : {
-        type: String,
-    },
-    gpsrn : {
-        type: String,
-    }
-});
+class Project extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        title: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.TEXT,
+        },
+        status: {
+          type: DataTypes.STRING,
+          defaultValue: "pending",
+        },
+        tags: {
+          type: DataTypes.STRING,
+        },
+        date: {
+          type: DataTypes.STRING,
+        },
+        gpsrn: {
+          type: DataTypes.STRING,
+        },
+      },
+      {
+        sequelize,
+        modelName: "Project",
+      }
+    );
+  }
 
-const Project = mongoose.model('Project', ProjectSchema);
+  static associate(models) {
+    this.belongsTo(models.Faculty, { foreignKey: "facultyId", as: "faculty" });
+    this.belongsToMany(models.Student, {
+      through: "ProjectStudent",
+      foreignKey: "projectId",
+      otherKey: "studentId",
+      as: "students",
+    });
+  }
+}
 
 module.exports = Project;

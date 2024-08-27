@@ -1,17 +1,24 @@
-const {getStudentDetails,getAllprojects,getProjectDescrition,applyForProject,uploadStudentDetails,getStudentProjects} = require('../controllers/student');
+const {
+  getStudentDetails,
+  getAllProjects,
+  getProjectDescription,
+  applyForProject,
+  uploadStudentDetails,
+  getStudentProjects,
+} = require("../controllers/student");
 
-const router = require('express').Router();
+const router = require("express").Router();
 
-router.get('/getdetails', getStudentDetails);
+router.get("/getdetails", getStudentDetails);
 
-router.get('/getallprojects',getAllprojects);
+router.get("/getallprojects", getAllProjects);
 
-router.post('/getprojectdescription',getProjectDescrition);
+router.post("/getprojectdescription", getProjectDescription);
 
-router.post('/applyforproject',applyForProject);
+router.post("/applyforproject", applyForProject);
 
-router.post('/uploadstudentdetails',uploadStudentDetails);
+router.post("/uploadstudentdetails", uploadStudentDetails);
 
-router.get('/getstudentprojects',getStudentProjects);
+router.get("/getstudentprojects", getStudentProjects);
 
 module.exports = router;

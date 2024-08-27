@@ -1,11 +1,8 @@
-const Faculty = require("../models/Faculty");
-const Student = require("../models/Student");
+const Faculty = require("../models/Faculty.js");
+const Student = require("../models/Student.js");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
-//use express sessions and passport google oauth to implement google login
-
-//passport.use() is used to define a new strategy
 passport.use(
   new GoogleStrategy(
     {
@@ -14,42 +11,38 @@ passport.use(
       callbackURL: "/api/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
-      //this function is called when the user is authenticated
-      //the user profile is passed to the done() function
       try {
-        //set type of user based on the emails
-
         const faculty = await Faculty.findOne({
-          email: profile.emails[0].value,
+          where: { email: profile.emails[0].value },
         });
         if (faculty) {
           profile.type = "faculty";
-          profile.mongoid = faculty._id;
+          profile.id = faculty.id;
           return done(null, profile);
         }
 
-        if(!profile.emails[0].value.endsWith("@goa.bits-pilani.ac.in")){
+        if (!profile.emails[0].value.endsWith("@goa.bits-pilani.ac.in")) {
           const error = new Error("Please login with your BITS email");
           return done(error, null);
         }
 
         const student = await Student.findOne({
-          email: profile.emails[0].value,
+          where: { email: profile.emails[0].value },
         });
         if (student) {
           profile.type = "student";
-          profile.mongoid = student._id;
+          profile.id = student.id;
           return done(null, profile);
         }
 
-        const new_student = new Student({
-          email: profile.emails[0].value,
-          name: profile.displayName,
+        const [new_student, created] = await Student.findOrCreate({
+          where: { email: profile.emails[0].value },
+          defaults: {
+            name: profile.displayName,
+          },
         });
 
-        const saved_student = await new_student.save();
-
-        profile.mongoid = saved_student._id;
+        profile.id = new_student.id;
         profile.type = "student";
 
         return done(null, profile);
@@ -60,17 +53,12 @@ passport.use(
   )
 );
 
-//serializeUser() and deserializeUser() are used to store the user in the session
-
-//serializeUser() is called when the user logs in
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
 
-//deserializeUser() is called when the user logs out
 passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-//export the passport object
 module.exports = passport;

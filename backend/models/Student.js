@@ -1,28 +1,39 @@
-const mongoose = require('mongoose');
+const { DataTypes, Model } = require("sequelize");
 
-const StudentSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    name: {
-        type: String
-    },
-    projects:{
-        type: [{
-            id: {type:mongoose.Schema.Types.ObjectId,ref:'Project'},
-            status: String,
-        }],
-    },
-    cgpa: {
-        type: String,
-    },
-    resume: {
-        type: String,
-    },
-});
+class Student extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        email: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true,
+        },
+        name: {
+          type: DataTypes.STRING,
+        },
+        cgpa: {
+          type: DataTypes.STRING,
+        },
+        resume: {
+          type: DataTypes.STRING,
+        },
+      },
+      {
+        sequelize,
+        modelName: "Student",
+      }
+    );
+  }
 
-const Student = mongoose.model('Student', StudentSchema);
+  static associate(models) {
+    this.belongsToMany(models.Project, {
+      through: "ProjectStudent",
+      foreignKey: "studentId",
+      otherKey: "projectId",
+      as: "projects",
+    });
+  }
+}
 
 module.exports = Student;
