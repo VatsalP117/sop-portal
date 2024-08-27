@@ -20,6 +20,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -37,12 +46,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 
 import { toast } from "sonner";
 
 import { useEffect, useState } from "react";
 
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 const statuses = [
   { label: "Open", value: "Open" },
@@ -67,7 +77,8 @@ const formSchema2 = z.object({
 
 export default function ProfileForm(props) {
   const [projectDetails, setProjectDetails] = useState({});
-
+  const [remarks, setRemarks] = useState("No Remarks");
+  const [category, setCategory] = useState("SOP");
   const router = useRouter();
 
   useEffect(() => {
@@ -209,22 +220,53 @@ export default function ProfileForm(props) {
               }
             />
           )}
+          <Separator />
+          <div className="max-w-lg flex flex-col gap-4">
+            <h1 className="text-3xl font-bold">Student Details</h1>
+            <Input
+              type="text"
+              placeholder="Remarks"
+              onChange={(e) => setRemarks(e.target.value)}
+            />
+            <div className="max-w-[150px]">
+              <Select defaultValue="SOP" onValueChange={setCategory}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Category</SelectLabel>
+                    <SelectItem value="SOP">SOP</SelectItem>
+                    <SelectItem value="DOP">DOP</SelectItem>
+                    <SelectItem value="LOP">LOP</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
           <Button
-            onClick={async() => {
+            onClick={async () => {
               try {
-                const response: any = await fetch("/api/student/applyforproject", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    projectid: props.params.projectId,
-                  }),
-                  withCredentials: true,
-                });
+                //console.log(remarks, category);
+                const response: any = await fetch(
+                  "/api/student/applyforproject",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      projectid: props.params.projectId,
+                      remarks,
+                      category,
+                    }),
+                    withCredentials: true,
+                  }
+                );
                 if (response.status === 200) {
                   toast("Successfully applied to project");
-                  router.push('/student');
+                  router.push("/student");
                 } else {
                   toast("Failed to apply to project");
                 }
@@ -238,35 +280,6 @@ export default function ProfileForm(props) {
           </Button>
         </form>
       </Form>
-      {/* <Form {...form2}>
-        <form
-          onSubmit={form2.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6 mt-6"
-        >
-          <FormField
-            control={form2.control}
-            name="comments"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Comments</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Tell us a little bit about yourself"
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Please mention relevant comments you would like the faculty to
-                  consider.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form> */}
-      {/* </Form> */}
     </div>
   );
 }

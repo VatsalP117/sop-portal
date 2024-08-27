@@ -176,8 +176,8 @@ export default function Comp({ projectId }: any) {
       filterData(setData, data, ogData, value, onlyOpen);
     }
   }, [ogData, value]);
-  //console.log(data);
-  console.log("hello");
+  console.log(data);
+  // console.log("hello");
   return (
     <div className="container mx-auto">
       <DataTable columns={columns} data={data} />

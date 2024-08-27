@@ -7,6 +7,12 @@ class ProjectStudent extends Model {
         status: {
           type: DataTypes.STRING,
         },
+        remarks: {
+          type: DataTypes.TEXT,
+        },
+        category: {
+          type: DataTypes.STRING,
+        },
       },
       {
         sequelize,

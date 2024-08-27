@@ -62,7 +62,7 @@ const getProjects = async (req, res) => {
 
 const getProjectDescription = async (req, res) => {
   try {
-    console.log(req.body);
+    //console.log(req.body);
     const id = req.body.projectid;
     if (!id) {
       return res.status(402).json({ message: "project id not found" });
@@ -178,7 +178,6 @@ const changeStudentStatus = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
 const getProjectApplicants = async (req, res) => {
   try {
     const id = req.body.projectid;
@@ -194,21 +193,33 @@ const getProjectApplicants = async (req, res) => {
     if (!project) {
       return res.status(404).send("project not found");
     }
-    const new_students = project.students.map((student) => ({
-      name: student.name,
-      resume: student.resume,
-      cgpa: Number(student.cgpa),
-      status: student.ProjectStudent.status,
-      id: student.id,
-      projectId: id,
-    }));
+
+    const new_students = await Promise.all(
+      project.students.map(async (student) => {
+        let pj = await ProjectStudent.findOne({
+          where: {
+            projectId: id,
+            studentId: student.id,
+          },
+        });
+        return {
+          name: student.name,
+          resume: student.resume,
+          cgpa: Number(student.cgpa),
+          status: student.ProjectStudent.status,
+          id: student.id,
+          projectId: id,
+          remarks: pj ? pj.remarks : null,
+          category: pj ? pj.category : null,
+        };
+      })
+    );
     return res.status(200).json(new_students);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error.message });
   }
 };
-
 const acceptStudent = async (req, res) => {
   try {
     const { projectid, studentid } = req.body;

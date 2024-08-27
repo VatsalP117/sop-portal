@@ -15,6 +15,8 @@ export type Application = {
   id: string;
   resume: string;
   projectId: string;
+  category: string;
+  remarks: string;
 };
 
 export const columns: ColumnDef<Application>[] = [
@@ -23,18 +25,23 @@ export const columns: ColumnDef<Application>[] = [
     header: "Student Name",
   },
   {
+    accessorKey: "category",
+    header: "Category",
+  },
+
+  {
     accessorKey: "projectId",
     header: "",
     cell: ({ row }) => {
-      return (<></>)
-    }
+      return <></>;
+    },
   },
   {
     accessorKey: "id",
     header: "",
     cell: ({ row }) => {
-      return (<></>)
-    }
+      return <></>;
+    },
   },
   {
     accessorKey: "cgpa",
@@ -52,23 +59,33 @@ export const columns: ColumnDef<Application>[] = [
     },
   },
   {
+    accessorKey: "remarks",
+    header: "Remarks",
+  },
+  {
     accessorKey: "resume",
-    header:"",
+    header: "",
     cell: ({ row }) => {
       return (
-          <Button size="sm" onClick={()=>{
+        <Button
+          size="sm"
+          onClick={() => {
             window.open(row.getValue("resume"), "_blank");
-          }}>View Resume</Button>
+          }}
+        >
+          View Resume
+        </Button>
       );
     },
   },
+
   {
     accessorKey: "status",
     header: "Application Status",
     cell: ({ row }) => {
       console.log(row.getValue("projectId"));
-      const projectId=row.getValue("projectId");
-      const studentId=row.getValue("id");
+      const projectId = row.getValue("projectId");
+      const studentId = row.getValue("id");
       if (row.getValue("status") === "Accepted") {
         return (
           <div className="flex space-x-2">
@@ -81,7 +98,9 @@ export const columns: ColumnDef<Application>[] = [
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate  flex flex-row gap-2 flex-wrap">
-              <Badge className="text-md" variant="destructive">Rejected</Badge>
+              <Badge className="text-md" variant="destructive">
+                Rejected
+              </Badge>
             </span>
           </div>
         );
@@ -89,44 +108,54 @@ export const columns: ColumnDef<Application>[] = [
         return (
           <div className="flex space-x-2">
             <span className="max-w-[500px] truncate  flex flex-row gap-4 flex-wrap">
-              <Button size="sm" onClick={async ()=>{
-                fetch(`/api/faculty/acceptstudent`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    projectid: projectId,
-                    studentid: studentId
-                  }),
-                  withCredentials: true,
-                }).then((response) => {
-                  if(response.status===200){
-                    window.location.reload();
-                  } else {
-                    alert("Error in accepting student");
-                  }
-                })
-              }}>Accept</Button>
-              <Button size="sm" onClick={()=>{
-                fetch(`/api/faculty/rejectstudent`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    projectid: projectId,
-                    studentid: studentId
-                  }),
-                  withCredentials: true,
-                }).then((response) => {
-                  if(response.status===200){
-                    window.location.reload();
-                  } else {
-                    alert("Error in rejecting student");
-                  }
-                })
-              }}>Reject</Button>
+              <Button
+                size="sm"
+                onClick={async () => {
+                  fetch(`/api/faculty/acceptstudent`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      projectid: projectId,
+                      studentid: studentId,
+                    }),
+                    withCredentials: true,
+                  }).then((response) => {
+                    if (response.status === 200) {
+                      window.location.reload();
+                    } else {
+                      alert("Error in accepting student");
+                    }
+                  });
+                }}
+              >
+                Accept
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => {
+                  fetch(`/api/faculty/rejectstudent`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      projectid: projectId,
+                      studentid: studentId,
+                    }),
+                    withCredentials: true,
+                  }).then((response) => {
+                    if (response.status === 200) {
+                      window.location.reload();
+                    } else {
+                      alert("Error in rejecting student");
+                    }
+                  });
+                }}
+              >
+                Reject
+              </Button>
             </span>
           </div>
         );

@@ -109,6 +109,8 @@ const getProjectDescription = async (req, res) => {
 const applyForProject = async (req, res) => {
   try {
     const id = req.body.projectid;
+    const remarks = req.body.remarks;
+    const category = req.body.category;
     if (!id) {
       return res.status(402).send("project id not found");
     }
@@ -141,6 +143,8 @@ const applyForProject = async (req, res) => {
       projectId: project.id,
       studentId: student.id,
       status: "Pending",
+      remarks,
+      category,
     });
     //sendMail(student.email, project.gpsrn, project.title);
     //sendmail to faculty of the project
