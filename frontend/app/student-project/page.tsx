@@ -47,7 +47,7 @@ import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/icons";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { useEffect, useState } from "react";
@@ -80,7 +80,9 @@ export default function ProfileForm(props) {
   const [remarks, setRemarks] = useState("No Remarks");
   const [category, setCategory] = useState("SOP");
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const projectId = searchParams.get("projectId");
+  console.log(projectId);
   useEffect(() => {
     const response = fetch("/api/student/getprojectdescription", {
       method: "POST",
@@ -88,7 +90,7 @@ export default function ProfileForm(props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        projectid: props.params.projectId,
+        projectid: projectId,
       }),
       withCredentials: true,
     })
@@ -107,27 +109,7 @@ export default function ProfileForm(props) {
     mode: "onChange",
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // console.log(values);
-    // try {
-    //   const response: any = await fetch("/api/student/applyproject", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       projectid: props.params.projectId,
-    //     }),
-    //     withCredentials: true,
-    //   });
-    //   if (response.status === 200) {
-    //     toast("Successfully applied to project");
-    //   } else {
-    //     toast("Failed to apply to project");
-    //   }
-    // } catch (err) {
-    //   console.log(err);
-    //   toast("Failed to apply to project");
-    // }
+   
   }
   const form2 = useForm<z.infer<typeof formSchema2>>({
     resolver: zodResolver(formSchema2),
@@ -257,7 +239,7 @@ export default function ProfileForm(props) {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                      projectid: props.params.projectId,
+                      projectid: projectId,
                       remarks,
                       category,
                     }),

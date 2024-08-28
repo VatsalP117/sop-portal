@@ -107,111 +107,12 @@ const allTags = [
 ];
 
 async function getData(setData: any): Promise<Boolean> {
-  // Fetch data from your API here.
-  // setData([
-  //   {
-  //     id: "728ed52f",
-  //     project_name: "Rollator wala project",
-  //     professor: "Shubhangi DBMS wali",
-  //     tags: "Machine Learning, Software Development".split(", "),
-  //     status: "Open",
-  //   },
-  //   {
-  //     id: "729ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Open",
-  //   },
-  //   {
-  //     id: "730ed52f",
-  //     project_name: "HEL ka SOP lmao",
-  //     professor: "Shalini",
-  //     tags: "Listening, Speaking, B- lagega".split(", "),
-  //     status: "Open",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence, Software Development".split(
-  //       ", "
-  //     ),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
-  //   {
-  //     id: "731ed52f",
-  //     project_name: "Image processing",
-  //     professor: "RPJ",
-  //     tags: "Machine Learning, Artificial Intelligence".split(", "),
-  //     status: "Closed",
-  //   },
+  const response = await fetch("/api/student/getallprojects", {
+    method: "GET",
+    withCredentials: true,
+  });
 
-  //   // ...
-  // ]);
-
-  const response =  await fetch("/api/student/getallprojects",{
-    method:"GET",
-    withCredentials:true,
-  })
-
-  if(response.status === 200){
+  if (response.status === 200) {
     const data = await response.json();
     setData(data);
   } else {
@@ -232,11 +133,6 @@ export default function Comp() {
   useEffect(() => {
     getData(setOgData);
   }, []);
-  // useEffect(() => {
-  //   if (ogData.length > 0) setData(ogData);
-
-  //   console.log("mai hi hu bhai");
-  // }, [ogData, value]);
   useEffect(() => {
     console.log("mai hi hu bhai bahar se");
     if (ogData.length > 0) {

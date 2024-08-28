@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
                   ))}
                   <TableCell onClick={() => console.log(row.original)}>
                     <Button asChild>
-                      <Link href={`/student-project/${row.original.id}`}>View Details</Link>
+                      <Link href={`/student-project?projectId=${row.original.id}`}>View Details</Link>
                     </Button>
                   </TableCell>
                 </TableRow>

@@ -150,35 +150,11 @@ const Student = (props) => {
             </DialogContent>
           </Dialog>
         </div>
-        {/* <Card className="resume-card flex flex-row items-center justify-center">
-          <CardHeader>
-            <CardTitle>Resume</CardTitle>
-          </CardHeader>
-          <Icons.upload className="ml-auto mr-4 h-10 w-10" />
-        </Card> */}
         <Card className="projects-applied-card flex flex-col">
           <CardHeader>
             <CardTitle>Projects Applied</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            {/* <div className="flex flex-row items-center justify-start ">
-              <CardDescription className="basis-1/2">
-                Project Title
-              </CardDescription>
-              <Badge>Accepted</Badge>
-            </div>
-            <div className="flex flex-row items-center justify-start ">
-              <CardDescription className="basis-1/2">
-                Project Title
-              </CardDescription>
-              <Badge variant="outline">Pending</Badge>
-            </div>
-            <div className="flex flex-row items-center justify-start ">
-              <CardDescription className="basis-1/2">
-                Project Title
-              </CardDescription>
-              <Badge variant="destructive">Rejected</Badge>
-            </div> */}
             {studentDetails.map((project) => {
               const variant= project.status === "Accepted" ? "default" : project.status === "Rejected" ? "destructive" : "outine";
               return (

@@ -33,7 +33,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const router=useRouter();
+  const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
@@ -45,7 +45,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    
+
     state: {
       columnFilters,
       sorting,
@@ -53,7 +53,6 @@ export function DataTable<TData, TValue>({
   });
   useEffect(() => {
     table.setPageSize(5);
-    
   }, []);
 
   return (
@@ -109,10 +108,14 @@ export function DataTable<TData, TValue>({
 
                   <TableCell onClick={() => console.log(row.original)}>
                     <Button asChild>
-                      <Link href={`/project/${row.original.id}`}>Edit</Link>
+                      <Link href={`/project?projectId=${row.original.id}`}>Edit</Link>
                     </Button>
                   </TableCell>
-                  <TableCell onClick={() =>router.push(`/applications/${row.original.id}`)}>
+                  <TableCell
+                    onClick={() =>
+                      router.push(`/applications?projectId=${row.original.id}`)
+                    }
+                  >
                     <Button variant="secondary">View Applications</Button>
                   </TableCell>
                 </TableRow>

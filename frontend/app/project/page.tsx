@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useSearchParams } from "next/navigation";
 import {
   Popover,
   PopoverContent,
@@ -71,18 +72,20 @@ const formSchema = z.object({
   gpsrn: z.string(),
 });
 
-export default function ProfileForm({ params }) {
+export default function ProfileForm() {
   //const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const projectId = searchParams.get("projectId");
   const [initial, setInitial] = useState(null);
   useEffect(() => {
-    if (params.projectId !== "new") {
+    if (projectId !== "new") {
       fetch("/api/faculty/getprojectdescription", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          projectid: params.projectId,
+          projectid: projectId,
         }),
         withCredentials: true,
       })
@@ -129,7 +132,7 @@ export default function ProfileForm({ params }) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (params.projectId === "new") {
+    if (projectId === "new") {
       try {
         console.log(values);
         console.log(selectedItems);
@@ -173,7 +176,7 @@ export default function ProfileForm({ params }) {
             date: values.date.toDateString(),
             tags: selectedItems,
             description: description,
-            projectid: params.projectId,
+            projectid: projectId,
           }),
         });
         if (response.status === 200) {
@@ -361,7 +364,7 @@ export default function ProfileForm({ params }) {
             </div>
           </div>
           <h3>Project Description</h3>
-          {(initial || params.projectId === "new") && (
+          {(initial || projectId === "new") && (
             <Editor
               editable={true}
               setDescription={setDescription}
