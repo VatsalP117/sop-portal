@@ -73,10 +73,12 @@ const formSchema = z.object({
 });
 
 export default function ProfileForm() {
-  //const { toast } = useToast();
   const searchParams = useSearchParams();
   const projectId = searchParams.get("projectId");
   const [initial, setInitial] = useState(null);
+  const router = useRouter();
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [description, setDescription] = useState([]);
   useEffect(() => {
     if (projectId !== "new") {
       fetch("/api/faculty/getprojectdescription", {
@@ -92,15 +94,19 @@ export default function ProfileForm() {
         .then((res) => res.json())
         .then((data) => {
           //document.getElementById("project_title").value = data.project_title;
-          setSelectedItems(data.tags);
+          form.reset({
+            project_title: data.project_title,
+            status: data.status,
+            date: new Date(data.date),
+            gpsrn: data.gpsrn,
+          });
+          setSelectedItems(data.tags || []);
+          setDescription(data.description);
           setInitial(data);
         });
     }
   }, []);
 
-  const router = useRouter();
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [description, setDescription] = useState([]);
   const handleSelectChange = (value: string) => {
     if (!selectedItems.includes(value)) {
       setSelectedItems((prev) => [...prev, value]);
@@ -134,9 +140,9 @@ export default function ProfileForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (projectId === "new") {
       try {
-        console.log(values);
-        console.log(selectedItems);
-        console.log(description);
+        // console.log(values);
+        // console.log(selectedItems);
+        // console.log(description);
         const response: any = await fetch("/api/faculty/createproject", {
           method: "POST",
           headers: {
@@ -162,9 +168,9 @@ export default function ProfileForm() {
       }
     } else {
       try {
-        console.log(values);
-        console.log(selectedItems);
-        console.log(description);
+        // console.log(values);
+        // console.log(selectedItems);
+        // console.log(description);
         const response: any = await fetch("/api/faculty/editproject", {
           method: "POST",
           headers: {
@@ -368,7 +374,7 @@ export default function ProfileForm() {
             <Editor
               editable={true}
               setDescription={setDescription}
-              initial={initial?.description}
+              // initial={initial?.description}
             />
           )}
           <Button type="submit">Submit</Button>
