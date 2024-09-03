@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const nodemailer = require("nodemailer");
 const Faculty = require("../models/Faculty");
+const User = require("../models/User");
 const Project = require("../models/Project");
 const Student = require("../models/Student");
 const ProjectStudent = require("../models/ProjectStudent");
@@ -42,27 +43,29 @@ const getStudentDetails = async (req, res) => {
   }
 };
 
+//convert to using unified user model
 const getAllProjects = async (req, res) => {
   try {
     const projects = await Project.findAll({
       include: [
         {
-          model: Faculty,
+          model: User,
           as: "faculty",
-          attributes: ["name"],
         },
       ],
     });
+    //console.log(projects);
     if (!projects.length) {
       return res.status(404).json({ message: "No projects found" });
     }
     const new_projects = projects.map((project) => {
+      //console.log(project.faculty);
       return {
-        id: project.id,
+        id: project.project_id,
         project_name: project.title,
         status: project.status,
         tags: project.tags.split(","),
-        professor: project.faculty.name,
+        professor: project.faculty.users_name,
       };
     });
     return res.status(200).json(new_projects);
@@ -78,29 +81,22 @@ const getProjectDescription = async (req, res) => {
     if (!id) {
       return res.status(402).json({ message: "project id not found" });
     }
-    const project = await Project.findByPk(id, {
-      include: [
-        {
-          model: Faculty,
-          as: "faculty",
-          attributes: ["name"],
-        },
-      ],
-    });
+    const project = await Project.findByPk(id);
     if (!project) {
       return res.status(404).json({ message: "project not found" });
     }
     return res.status(200).json({
-      id: project.id,
+      id: project.project_id,
       project_title: project.title,
       status: project.status,
       tags: project.tags.split(","),
-      professor: project.faculty.name,
+      //professor: project.faculty.name,
       date: project.date,
       description: JSON.parse(project.description),
       gpsrn: project.gpsrn,
     });
   } catch (error) {
+    console.log("gaya hi nahi projectdescription");
     console.log(error);
     return res.status(500).json({ message: error.message });
   }
@@ -120,28 +116,29 @@ const applyForProject = async (req, res) => {
       return res.status(404).send("project not found");
     }
 
-    const student = await Student.findByPk(req.user.id);
+    const student = await User.findByPk(req.user.id);
     if (!student) {
       return res.status(404).send("student not found");
     }
 
-    if (!student.cgpa || !student.resume) {
-      return res.status(400).send("Please upload your details first");
-    }
+    // if (!student.cgpa || !student.resume) {
+    //   return res.status(400).send("Please upload your details first");
+    // }
 
     const applied = await ProjectStudent.findOne({
       where: {
-        projectId: id,
-        studentId: student.id,
+        project_id: id,
+        users_id: student.users_id,
       },
     });
+    console.log("applied", applied);
     if (applied) {
       return res.status(400).send("Student already applied for this project");
     }
 
     await ProjectStudent.create({
-      projectId: project.id,
-      studentId: student.id,
+      project_id: id,
+      users_id: student.users_id,
       status: "Pending",
       remarks,
       category,
@@ -149,7 +146,7 @@ const applyForProject = async (req, res) => {
     //sendMail(student.email, project.gpsrn, project.title);
     //sendmail to faculty of the project
     // console.log(project);
-    const faculty = await Faculty.findByPk(project.facultyId);
+    const faculty = await User.findByPk(project.facultyId);
     // console.log(faculty);
     sendMail(faculty.email, project.gpsrn, project.title);
     return res.status(200).send("Applied for project successfully");
@@ -159,49 +156,55 @@ const applyForProject = async (req, res) => {
   }
 };
 
-const uploadStudentDetails = async (req, res) => {
-  try {
-    const student = await Student.findByPk(req.user.id);
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
-    }
-    await student.update({
-      cgpa: req.body.cgpa,
-      resume: req.body.resume,
-    });
-    return res
-      .status(200)
-      .json({ message: "Student details updated successfully" });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
-  }
-};
+// const uploadStudentDetails = async (req, res) => {
+//   try {
+//     const student = await Student.findByPk(req.user.id);
+//     if (!student) {
+//       return res.status(404).json({ message: "Student not found" });
+//     }
+//     await student.update({
+//       cgpa: req.body.cgpa,
+//       resume: req.body.resume,
+//     });
+//     return res
+//       .status(200)
+//       .json({ message: "Student details updated successfully" });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
 
 const getStudentProjects = async (req, res) => {
   try {
-    const student = await Student.findByPk(req.user.id, {
+    const student = await User.findByPk(req.user.id, {
       include: [
         {
           model: Project,
-          as: "projects",
-          through: { attributes: ["status"] },
+          as: "students", // This alias matches the one defined in the Project model
+          through: {
+            attributes: ["status", "remarks", "category"],
+          },
         },
       ],
     });
+
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
-    if (!student.projects.length) {
+
+    if (!student.students.length) {
       return res.status(404).json({ message: "No projects found" });
     }
-    const new_projects = student.projects.map((project) => ({
+
+    const new_projects = student.students.map((project) => ({
       title: project.title,
       status: project.ProjectStudent.status,
     }));
+
     return res.status(200).json(new_projects);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -211,6 +214,6 @@ module.exports = {
   getAllProjects,
   getProjectDescription,
   applyForProject,
-  uploadStudentDetails,
+
   getStudentProjects,
 };

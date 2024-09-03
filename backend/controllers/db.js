@@ -3,6 +3,7 @@ const { Sequelize } = require("sequelize");
 const Faculty = require("../models/Faculty");
 const Project = require("../models/Project");
 const Student = require("../models/Student");
+const User = require("../models/User");
 const ProjectStudent = require("../models/ProjectStudent");
 const sequelize = new Sequelize(process.env.MYSQL_URL, { logging: false }); // Example for sqlite
 mongoose
@@ -26,11 +27,13 @@ sequelize
 Faculty.init(sequelize);
 Project.init(sequelize);
 Student.init(sequelize);
+User.init(sequelize);
 ProjectStudent.init(sequelize);
 
 Faculty.associate({ Project });
-Project.associate({ Faculty, Student });
+Project.associate({ Faculty, Student, User });
 Student.associate({ Project });
+User.associate({ Project });
 console.log("models initialized");
 // sequelize
 //   .sync({ force: false })

@@ -3,7 +3,6 @@ const {
   getAllProjects,
   getProjectDescription,
   applyForProject,
-  uploadStudentDetails,
   getStudentProjects,
 } = require("../controllers/student");
 
@@ -17,7 +16,7 @@ router.post("/getprojectdescription", getProjectDescription);
 
 router.post("/applyforproject", applyForProject);
 
-router.post("/uploadstudentdetails", uploadStudentDetails);
+//router.post("/uploadstudentdetails", uploadStudentDetails);
 
 router.get("/getstudentprojects", getStudentProjects);
 

@@ -1,5 +1,4 @@
-const Faculty = require("../models/Faculty.js");
-const Student = require("../models/Student.js");
+const User = require("../models/User.js");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
@@ -12,40 +11,19 @@ passport.use(
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
-        const faculty = await Faculty.findOne({
-          where: { email: profile.emails[0].value },
+        const user = await User.findOne({
+          where: { users_email_id: profile.emails[0].value },
         });
-        if (faculty) {
-          profile.type = "faculty";
-          profile.id = faculty.id;
+
+        if (user) {
+          profile.type = user.users_type;
+          profile.id = user.users_id;
           return done(null, profile);
         }
 
-        if (!profile.emails[0].value.endsWith("@goa.bits-pilani.ac.in")) {
-          const error = new Error("Please login with your BITS email");
-          return done(error, null);
-        }
-
-        const student = await Student.findOne({
-          where: { email: profile.emails[0].value },
-        });
-        if (student) {
-          profile.type = "student";
-          profile.id = student.id;
-          return done(null, profile);
-        }
-
-        const [new_student, created] = await Student.findOrCreate({
-          where: { email: profile.emails[0].value },
-          defaults: {
-            name: profile.displayName,
-          },
-        });
-
-        profile.id = new_student.id;
-        profile.type = "student";
-
-        return done(null, profile);
+        // If user doesn't exist, don't create a new one and return an error
+        const error = new Error("User not found in the system");
+        return done(error, null);
       } catch (error) {
         return done(error, null);
       }

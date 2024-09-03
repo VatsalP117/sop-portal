@@ -1,3 +1,10 @@
+const userMiddleware = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.redirect(process.env.CLIENT_URL);
+};
+
 const studentMiddleware = (req, res, next) => {
   if (req.isAuthenticated() && req.user.type === "student") {
     return next();
@@ -12,4 +19,4 @@ const facultyMiddleware = (req, res, next) => {
   return res.redirect(process.env.CLIENT_URL);
 };
 
-module.exports = { studentMiddleware, facultyMiddleware };
+module.exports = { userMiddleware, studentMiddleware, facultyMiddleware };

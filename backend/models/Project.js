@@ -4,6 +4,11 @@ class Project extends Model {
   static init(sequelize) {
     super.init(
       {
+        project_id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
         title: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -24,20 +29,30 @@ class Project extends Model {
         gpsrn: {
           type: DataTypes.STRING,
         },
+        facultyId: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          references: {
+            model: "users_details",
+            key: "users_id",
+          },
+        },
       },
       {
         sequelize,
         modelName: "Project",
+        tableName: "projects",
+        timestamps: false,
       }
     );
   }
 
   static associate(models) {
-    this.belongsTo(models.Faculty, { foreignKey: "facultyId", as: "faculty" });
-    this.belongsToMany(models.Student, {
+    this.belongsTo(models.User, { foreignKey: "facultyId", as: "faculty" });
+    this.belongsToMany(models.User, {
       through: "ProjectStudent",
-      foreignKey: "projectId",
-      otherKey: "studentId",
+      foreignKey: "project_id",
+      otherKey: "users_id",
       as: "students",
     });
   }
