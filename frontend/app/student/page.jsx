@@ -40,25 +40,22 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const Student = (props) => {
-
   const [studentDetails, setStudentDetails] = useState([]);
-
   useEffect(() => {
-    fetch('/api/student/getstudentprojects',{
-      method:'GET',
-      withCredentials:true,
-    }).then((response)=>{
-      if(response.status === 200){
-        response.json().then((data)=>{
+    fetch("/api/student/getstudentprojects", {
+      method: "GET",
+      withCredentials: true,
+    }).then((response) => {
+      if (response.status === 200) {
+        response.json().then((data) => {
           setStudentDetails(data);
           console.log(data);
-        })
+        });
+      } else {
+        //toast("Failed to fetch student details");
       }
-      else {
-        toast("Failed to fetch student details")
-      }
-    })
-  },[]);
+    });
+  }, []);
 
   const [cgpa, setCgpa] = useState();
   const [resume, setResume] = useState("");
@@ -79,76 +76,6 @@ const Student = (props) => {
               </CardDescription>
             </CardHeader>
           </Card>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Update Profile</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Update profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're
-                  done.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="cgpa" className="text-right">
-                    CGPA
-                  </Label>
-                  <Input
-                    id="cgpa"
-                    value={cgpa}
-                    className="col-span-3"
-                    onChange={(e) => {
-                      setCgpa(e.target.value);
-                    }}
-                    type={"number"}
-                    step={0.01}
-                    min={0}
-                    max={10}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="username" className="text-right">
-                    Resume
-                  </Label>
-                  <Input
-                    id="resume"
-                    value={resume}
-                    className="col-span-3"
-                    onChange={(e) => {
-                      setResume(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button onClick={async () => {
-                  if(cgpa>10 || cgpa<0 || resume.length<1){
-                    toast("Invalid CGPA or Resume Link")
-                    return
-                  }
-                  const response = await fetch("/api/student/uploadstudentdetails", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    withCredentials: true,
-                    body: JSON.stringify({
-                      cgpa: cgpa,
-                      resume: resume,
-                    }),
-                  });
-                  if (response.status === 200) {
-                    toast("profile updated successfully")
-                  } else {
-                    toast("Profile update failed");
-                  }
-                }}>Save changes</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </div>
         <Card className="projects-applied-card flex flex-col">
           <CardHeader>
@@ -156,7 +83,12 @@ const Student = (props) => {
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             {studentDetails.map((project) => {
-              const variant= project.status === "Accepted" ? "default" : project.status === "Rejected" ? "destructive" : "outine";
+              const variant =
+                project.status === "Accepted"
+                  ? "default"
+                  : project.status === "Rejected"
+                  ? "destructive"
+                  : "outine";
               return (
                 <div className="flex flex-row items-center justify-start ">
                   <CardDescription className="basis-1/2">

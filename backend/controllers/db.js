@@ -35,13 +35,13 @@ Project.associate({ Faculty, Student, User });
 Student.associate({ Project });
 User.associate({ Project });
 console.log("models initialized");
-// sequelize
-//   .sync({ force: false })
-//   .then(() => {
-//     console.log("tables synced");
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("tables synced");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 module.exports = { sequelize, Faculty, Project, Student, ProjectStudent };

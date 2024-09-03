@@ -59,7 +59,6 @@ const getAllProjects = async (req, res) => {
       return res.status(404).json({ message: "No projects found" });
     }
     const new_projects = projects.map((project) => {
-      //console.log(project.faculty);
       return {
         id: project.project_id,
         project_name: project.title,
@@ -121,9 +120,7 @@ const applyForProject = async (req, res) => {
       return res.status(404).send("student not found");
     }
 
-    // if (!student.cgpa || !student.resume) {
-    //   return res.status(400).send("Please upload your details first");
-    // }
+
 
     const applied = await ProjectStudent.findOne({
       where: {
