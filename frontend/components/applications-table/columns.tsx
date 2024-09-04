@@ -1,12 +1,19 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 export type Application = {
   //   id: string;
   name: string;
@@ -43,41 +50,53 @@ export const columns: ColumnDef<Application>[] = [
       return <></>;
     },
   },
-  {
-    accessorKey: "cgpa",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className=" -ml-6"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          CGPA
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "cgpa",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         className=" -ml-6"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         CGPA
+  //         <ArrowUpDown className="h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "remarks",
-    header: "Remarks",
-  },
-  {
-    accessorKey: "resume",
-    header: "",
+    header: "Statement of Motivation",
     cell: ({ row }) => {
       return (
-        <Button
-          size="sm"
-          onClick={() => {
-            window.open(row.getValue("resume"), "_blank");
-          }}
-        >
-          View Resume
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>View</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            {row.getValue("remarks")}
+          </DialogContent>
+        </Dialog>
       );
     },
   },
+  // {
+  //   accessorKey: "resume",
+  //   header: "",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <Button
+  //         size="sm"
+  //         onClick={() => {
+  //           window.open(row.getValue("resume"), "_blank");
+  //         }}
+  //       >
+  //         View Resume
+  //       </Button>
+  //     );
+  //   },
+  // },
 
   {
     accessorKey: "status",

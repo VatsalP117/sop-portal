@@ -123,33 +123,7 @@ async function getData(setData: any, projectId: any): Promise<Boolean> {
       console.log(data);
       setData(data);
     });
-  // setData([
-  //   {
-  //     student_name: "Vatsal Patel",
-  //     student_id: "2021A7PS2460G",
-  //     cgpa: 8.33,
-  //     status: "Accepted",
-  //   },
-  //   {
-  //     student_name: "Ruchik Bakhai",
-  //     student_id: "2021A7PS2054G",
-  //     cgpa: 9.12,
-  //     status: "Accepted",
-  //   },
-  //   {
-  //     student_name: "Sharad Arora",
-  //     student_id: "2021A7PS1427G",
-  //     cgpa: 7.25,
-  //     status: "Rejected",
-  //   },
-  //   {
-  //     student_name: "Shubh Agarwal",
-  //     student_id: "2021A7PS0001G",
-  //     cgpa: 7.28,
-  //     status: "Pending",
-  //   },
-  //   // ...
-  // ]);
+  
   return true;
 }
 
@@ -164,11 +138,6 @@ export default function Comp({ projectId }: any) {
   useEffect(() => {
     getData(setOgData, projectId);
   }, []);
-  // useEffect(() => {
-  //   if (ogData.length > 0) setData(ogData);
-
-  //   console.log("mai hi hu bhai");
-  // }, [ogData, value]);
   useEffect(() => {
     console.log("mai hi hu bhai bahar se");
     if (ogData.length > 0) {

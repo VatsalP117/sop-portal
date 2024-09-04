@@ -103,11 +103,6 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  {/* <TableCell onClick={() => console.log(row.original)}>
-                    <Button asChild>
-                      <Link href="/student-project/1234">View Details</Link>
-                    </Button>
-                  </TableCell> */}
                 </TableRow>
               ))
             ) : (
