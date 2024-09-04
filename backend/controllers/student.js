@@ -93,6 +93,8 @@ const getProjectDescription = async (req, res) => {
       date: project.date,
       description: JSON.parse(project.description),
       gpsrn: project.gpsrn,
+      minStudents: project.minStudents,
+      maxStudents: project.maxStudents,
     });
   } catch (error) {
     console.log("gaya hi nahi projectdescription");

@@ -85,6 +85,8 @@ const getProjectDescription = async (req, res) => {
       date: project.date,
       description: JSON.parse(project.description),
       gpsrn: project.gpsrn,
+      minStudents: project.minStudents,
+      maxStudents: project.maxStudents,
     });
   } catch (error) {
     console.error(error);
@@ -94,7 +96,16 @@ const getProjectDescription = async (req, res) => {
 
 const createProject = async (req, res) => {
   try {
-    const { project_title, status, date, gpsrn, description, tags } = req.body;
+    const {
+      project_title,
+      status,
+      date,
+      gpsrn,
+      description,
+      tags,
+      minStudents,
+      maxStudents,
+    } = req.body;
     const faculty = await User.findByPk(req.user.id);
 
     if (!faculty || faculty.users_type !== "faculty") {
@@ -108,6 +119,8 @@ const createProject = async (req, res) => {
       date,
       status,
       gpsrn,
+      minStudents,
+      maxStudents,
     });
     return res.status(200).json({ message: "Project created successfully" });
   } catch (error) {
@@ -118,8 +131,17 @@ const createProject = async (req, res) => {
 
 const editProject = async (req, res) => {
   try {
-    const { projectid, project_title, status, date, gpsrn, description, tags } =
-      req.body;
+    const {
+      projectid,
+      project_title,
+      status,
+      date,
+      gpsrn,
+      description,
+      tags,
+      minStudents,
+      maxStudents,
+    } = req.body;
     const project = await Project.findByPk(projectid);
     if (!project) {
       return res.status(404).send("Project not found");
@@ -131,6 +153,8 @@ const editProject = async (req, res) => {
       date,
       status,
       gpsrn,
+      minStudents,
+      maxStudents,
     });
     return res.status(200).json({ message: "Project edited successfully" });
   } catch (error) {

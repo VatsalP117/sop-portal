@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFormState } from "react-hook-form";
 import { z } from "zod";
-import { format } from "date-fns";
+import { format, min } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -48,6 +48,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import withAuth from "@/app/withAuth";
 import { useRouter } from "next/navigation";
 const statuses = [
   { label: "Open", value: "Open" },
@@ -69,12 +70,20 @@ const formSchema = z.object({
   date: z.date({
     required_error: "A date is required.",
   }),
-  gpsrn: z.string(),
+  minStudents: z.number().min(1, {
+    message: "Minimum students must be at least 1",
+  }),
+  maxStudents: z.number().min(1, {
+    message: "Maximum students must be at least 1",
+  }),
+  // gpsrn: z.string(),
 });
 
-export default function ProfileForm() {
+function ProfileForm(props) {
+  console.log(props);
   const searchParams = useSearchParams();
   const projectId = searchParams.get("projectId");
+  const [gpsrn, setgpsrn] = useState("");
   const [initial, setInitial] = useState(null);
   const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -98,15 +107,24 @@ export default function ProfileForm() {
             project_title: data.project_title,
             status: data.status,
             date: new Date(data.date),
-            gpsrn: data.gpsrn,
+            gpsrn: props.user.id,
+            minStudents: data.minStudents,
+            maxStudents: data.maxStudents,
           });
           setSelectedItems(data.tags || []);
           setDescription(data.description);
           setInitial(data);
         });
+    } else {
+      form.reset({
+        minStudents: 1,
+        maxStudents: 1,
+      });
     }
   }, []);
-
+  useEffect(() => {
+    setgpsrn(props.user.id);
+  }, []);
   const handleSelectChange = (value: string) => {
     if (!selectedItems.includes(value)) {
       setSelectedItems((prev) => [...prev, value]);
@@ -131,18 +149,12 @@ export default function ProfileForm() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValues: {
-    //   project_title: "",
-    // },
     mode: "onChange",
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (projectId === "new") {
       try {
-        // console.log(values);
-        // console.log(selectedItems);
-        // console.log(description);
         const response: any = await fetch("/api/faculty/createproject", {
           method: "POST",
           headers: {
@@ -154,6 +166,7 @@ export default function ProfileForm() {
             date: values.date.toDateString(),
             tags: selectedItems,
             description: description,
+            gpsrn: props.user.id,
           }),
         });
         if (response.status === 200) {
@@ -168,9 +181,6 @@ export default function ProfileForm() {
       }
     } else {
       try {
-        // console.log(values);
-        // console.log(selectedItems);
-        // console.log(description);
         const response: any = await fetch("/api/faculty/editproject", {
           method: "POST",
           headers: {
@@ -183,6 +193,7 @@ export default function ProfileForm() {
             tags: selectedItems,
             description: description,
             projectid: projectId,
+            gpsrn: props.user.id,
           }),
         });
         if (response.status === 200) {
@@ -318,15 +329,40 @@ export default function ProfileForm() {
             />
             <FormField
               control={form.control}
-              name="gpsrn"
+              name="minStudents"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>GPSRN</FormLabel>
+                  <FormLabel>Minimum Students</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="GPSRN"
+                      type="number"
+                      placeholder="Minimum Students"
                       {...field}
-                      defaultValue={initial?.gpsrn}
+                      onChange={(value) =>
+                        field.onChange(value.target.valueAsNumber)
+                      }
+                      defaultValue={1}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxStudents"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Maximum Students</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Maximum Students"
+                      {...field}
+                      onChange={(value) =>
+                        field.onChange(value.target.valueAsNumber)
+                      }
+                      defaultValue={1}
                     />
                   </FormControl>
                   <FormMessage />
@@ -370,6 +406,7 @@ export default function ProfileForm() {
             </div>
           </div>
           <h3>Project Description</h3>
+          <Badge variant="outline">Faculty GPSRN : {gpsrn}</Badge>
           {(initial || projectId === "new") && (
             <Editor
               editable={true}
@@ -383,3 +420,4 @@ export default function ProfileForm() {
     </div>
   );
 }
+export default withAuth(ProfileForm, "faculty");

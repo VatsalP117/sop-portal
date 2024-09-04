@@ -24,15 +24,15 @@ sequelize
   });
 
 // module.exports = mongoose;
-Faculty.init(sequelize);
+// Faculty.init(sequelize);
 Project.init(sequelize);
-Student.init(sequelize);
+// Student.init(sequelize);
 User.init(sequelize);
 ProjectStudent.init(sequelize);
 
-Faculty.associate({ Project });
-Project.associate({ Faculty, Student, User });
-Student.associate({ Project });
+// Faculty.associate({ Project });
+Project.associate({ User });
+// Student.associate({ Project });
 User.associate({ Project });
 console.log("models initialized");
 sequelize

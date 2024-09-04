@@ -29,6 +29,12 @@ class Project extends Model {
         gpsrn: {
           type: DataTypes.STRING,
         },
+        minStudents: {
+          type: DataTypes.INTEGER,
+        },
+        maxStudents: {
+          type: DataTypes.INTEGER,
+        },
         facultyId: {
           type: DataTypes.STRING,
           allowNull: false,

@@ -82,7 +82,6 @@ export default function ProfileForm(props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const projectId = searchParams.get("projectId");
-  console.log(projectId);
   useEffect(() => {
     const response = fetch("/api/student/getprojectdescription", {
       method: "POST",
@@ -108,9 +107,7 @@ export default function ProfileForm(props) {
     },
     mode: "onChange",
   });
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-   
-  }
+  async function onSubmit(values: z.infer<typeof formSchema>) {}
   const form2 = useForm<z.infer<typeof formSchema2>>({
     resolver: zodResolver(formSchema2),
   });
@@ -179,6 +176,34 @@ export default function ProfileForm(props) {
               )}
             />
           </div>
+          <div className="flex flex-row gap-16 items-center w-1/2 justify-between">
+            <FormField
+              control={form.control}
+              name="minStudents"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Minimum Students</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={projectDetails.minStudents} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxStudents"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Maximum Students</FormLabel>
+                  <FormControl>
+                    <Input {...field} value={projectDetails.maxStudents} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div className="flex flex-col gap-3">
             <FormLabel>Tags</FormLabel>
             <div className="flex flex-row gap-2">
@@ -205,11 +230,16 @@ export default function ProfileForm(props) {
           <Separator />
           <div className="max-w-lg flex flex-col gap-4">
             <h1 className="text-3xl font-bold">Student Details</h1>
-            <Input
-              type="text"
-              placeholder="Remarks"
-              onChange={(e) => setRemarks(e.target.value)}
-            />
+            <div>
+              <Textarea
+                type="text"
+                placeholder="Statement of Motivation for applying?"
+                onChange={(e) => setRemarks(e.target.value)}
+              />
+              <p className="text-sm text-muted-foreground">
+                Your message will be sent to the faculty of the project.
+              </p>
+            </div>
             <div className="max-w-[150px]">
               <Select defaultValue="SOP" onValueChange={setCategory}>
                 <SelectTrigger>
