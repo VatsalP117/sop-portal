@@ -8,7 +8,7 @@ class ProjectStudent extends Model {
           type: DataTypes.INTEGER,
           allowNull: false,
           references: {
-            model: "projects",
+            model: "sopprojects",
             key: "project_id",
           },
         },
@@ -40,7 +40,9 @@ class ProjectStudent extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Project, { foreignKey: "project_id" });
+    this.belongsTo(models.Project, {
+      foreignKey: "project_id",
+    });
     this.belongsTo(models.User, { foreignKey: "users_id" });
   }
 }

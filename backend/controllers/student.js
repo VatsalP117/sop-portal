@@ -122,8 +122,6 @@ const applyForProject = async (req, res) => {
       return res.status(404).send("student not found");
     }
 
-
-
     const applied = await ProjectStudent.findOne({
       where: {
         project_id: id,
@@ -142,12 +140,9 @@ const applyForProject = async (req, res) => {
       remarks,
       category,
     });
-    //sendMail(student.email, project.gpsrn, project.title);
-    //sendmail to faculty of the project
-    // console.log(project);
     const faculty = await User.findByPk(project.facultyId);
     // console.log(faculty);
-    sendMail(faculty.email, project.gpsrn, project.title);
+    sendMail(faculty.users_email_id, project.gpsrn, project.title);
     return res.status(200).send("Applied for project successfully");
   } catch (error) {
     console.log(error);

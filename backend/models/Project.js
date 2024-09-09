@@ -47,7 +47,7 @@ class Project extends Model {
       {
         sequelize,
         modelName: "Project",
-        tableName: "projects",
+        tableName: "sopprojects",
         timestamps: false,
       }
     );
