@@ -2,6 +2,9 @@ const express = require("express");
 
 require("dotenv").config();
 require("./controllers/db");
+const Project = require("./models/Project");
+const User = require("./models/User");
+const ProjectStudent = require("./models/ProjectStudent");
 const AuthRouter = require("./routes/auth");
 const studentRouter = require("./routes/student");
 const facultyRouter = require("./routes/faculty");
@@ -37,35 +40,43 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/student", studentMiddleware, studentRouter);
 
 app.use("/api/faculty", facultyMiddleware, facultyRouter);
-
+app.get("/api/hello", async (req, res) => {
+  const entries = await ProjectStudent.findAll();
+  let csvContent = "data:text/csv;charset=utf-8,";
+  const columns = [
+    "project_id",
+    "title",
+    "faculty_name",
+    "student_id",
+    "student_name",
+    "category",
+  ];
+  csvContent += columns.join(",") + "\r\n";
+  for (let i = 0; i < entries.length; i++) {
+    const student = await User.findByPk(entries[i].users_id);
+    const project = await Project.findByPk(entries[i].project_id);
+    const faculty = await User.findByPk(project.facultyId);
+    console.log(student, faculty, project);
+    if (entries[i].status == "Accepted") {
+      console.log(entries[i].status);
+      let rowArr = [
+        project.project_id,
+        project.title,
+        faculty.users_name,
+        student.users_id,
+        student.users_name,
+        entries[i].category,
+      ];
+      console.log(rowArr);
+      let row = rowArr.join(",");
+      csvContent += row + "\r\n";
+    }
+  }
+  console.log(csvContent);
+  res.send(csvContent);
+});
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
 });
-// const transporter = nodemailer.createTransport({
-//   service: "Gmail",
-//   host: "smtp.gmail.com",
-//   port: 465,
-//   secure: true,
-//   auth: {
-//     user: process.env.EMAIL_USER,
-//     pass: process.env.EMAIL_PASS,
-//   },
-// });
-
-// const mailOptions = {
-//   from: "csistest0@gmail.com",
-//   to: "vatsal4011@gmail.com",
-//   subject: "Hello from Nodemailer",
-//   text: "This is a test email sent using Nodemailer.",
-// };
-// transporter.sendMail(mailOptions, (error, info) => {
-//   if (error) {
-//     console.error("Error sending email: ", error);
-//   } else {
-//     console.log("Email sent: ", info.response);
-//   }
-// });
-// console.log("from index",transporter);
-// module.exports = {transporter};
