@@ -6,42 +6,21 @@ const Student = require("../models/Student");
 const User = require("../models/User");
 const ProjectStudent = require("../models/ProjectStudent");
 const sequelize = new Sequelize(process.env.MYSQL_URL, { logging: false }); // Example for sqlite
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("connected to database");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection has been established successfully.");
-  })
-  .catch((error) => {
-    console.error("Unable to connect to the database:", error);
-  });
 
-// module.exports = mongoose;
-// Faculty.init(sequelize);
 Project.init(sequelize);
-// Student.init(sequelize);
 User.init(sequelize);
 ProjectStudent.init(sequelize);
 
-// Faculty.associate({ Project });
 Project.associate({ User });
-// Student.associate({ Project });
 User.associate({ Project });
 console.log("models initialized");
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("tables synced");
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+// sequelize
+//   .sync()
+//   .then(() => {
+//     console.log("tables synced");
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
 
 module.exports = { sequelize, Faculty, Project, Student, ProjectStudent };

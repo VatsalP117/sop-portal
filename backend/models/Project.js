@@ -42,6 +42,8 @@ class Project extends Model {
             model: "users_details",
             key: "users_id",
           },
+          onDelete: "CASCADE", // Optional: specify what happens on delete
+          onUpdate: "CASCADE", // Optional: specify what happens on update
         },
       },
       {
@@ -54,7 +56,11 @@ class Project extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: "facultyId", as: "faculty" });
+    this.belongsTo(models.User, {
+      foreignKey: "facultyId",
+      as: "faculty",
+      targetKey: "users_id",
+    });
     this.belongsToMany(models.User, {
       through: "ProjectStudent",
       foreignKey: "project_id",
