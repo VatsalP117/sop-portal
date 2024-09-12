@@ -6,7 +6,7 @@ export default function Csv() {
     <div>
       <Button
         onClick={() => {
-          fetch("/api/hello")
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/hello`)
             .then((res) => res.text())
             .then((data) => {
               console.log(data);

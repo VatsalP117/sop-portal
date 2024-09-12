@@ -96,7 +96,6 @@ function filterData(
   // console.log(newData);
   setData(newData);
 }
-//to be fetched from backend
 const allTags = [
   "Software Development",
   "Systems",
@@ -206,14 +205,17 @@ async function getData(setData: any): Promise<Boolean> {
   //   // ...
   // ]);
 
-  const response = await fetch("/api/faculty/getprojects",{
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/faculty/getprojects`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-  if(response.status === 200){
+  if (response.status === 200) {
     const data = await response.json();
     setData(data);
   } else {

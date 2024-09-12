@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -27,10 +27,16 @@ export default function LoginPage() {
             Enter your email to sign in to your account
           </p> */}
           </div>
-          <Button className="flex flex-row justify-center items-center" onClick={()=>{
-            window.open('/api/auth/google', '_self');
-          }}>
-              Sign in with Google
+          <Button
+            className="flex flex-row justify-center items-center"
+            onClick={() => {
+              window.open(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`,
+                "_self"
+              );
+            }}
+          >
+            Sign in with Google
           </Button>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}

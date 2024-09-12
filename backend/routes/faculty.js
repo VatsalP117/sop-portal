@@ -16,8 +16,6 @@ router.get("/getprojects", getProjects);
 router.post("/getprojectdescription", getProjectDescription);
 router.post("/createproject", createProject);
 router.post("/editproject", editProject);
-// router.post("/deleteproject", deleteProject);
-// router.post("/changestudentstatus", changeStudentStatus);
 router.post("/getprojectapplicants", getProjectApplicants);
 router.post("/acceptstudent", acceptStudent);
 router.post("/rejectstudent", rejectStudent);

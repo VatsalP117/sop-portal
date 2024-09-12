@@ -83,16 +83,19 @@ export default function ProfileForm(props) {
   const searchParams = useSearchParams();
   const projectId = searchParams.get("projectId");
   useEffect(() => {
-    const response = fetch("/api/student/getprojectdescription", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        projectid: projectId,
-      }),
-      withCredentials: true,
-    })
+    const response = fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/student/getprojectdescription`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          projectid: projectId,
+        }),
+        withCredentials: true,
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -262,7 +265,7 @@ export default function ProfileForm(props) {
               try {
                 //console.log(remarks, category);
                 const response: any = await fetch(
-                  "/api/student/applyforproject",
+                  `${process.env.NEXT_PUBLIC_API_URL}/api/student/applyforproject`,
                   {
                     method: "POST",
                     headers: {

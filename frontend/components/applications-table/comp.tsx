@@ -96,7 +96,6 @@ function filterData(
   // console.log(newData);
   setData(newData);
 }
-//to be fetched from backend
 const allTags = [
   "Software Development",
   "Systems",
@@ -108,7 +107,7 @@ const allTags = [
 
 async function getData(setData: any, projectId: any): Promise<Boolean> {
   // Fetch data from your API here.
-  fetch("/api/faculty/getprojectapplicants", {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/faculty/getprojectapplicants`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -123,7 +122,7 @@ async function getData(setData: any, projectId: any): Promise<Boolean> {
       console.log(data);
       setData(data);
     });
-  
+
   return true;
 }
 

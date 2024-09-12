@@ -90,16 +90,19 @@ function ProfileForm(props) {
   const [description, setDescription] = useState([]);
   useEffect(() => {
     if (projectId !== "new") {
-      fetch("/api/faculty/getprojectdescription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          projectid: projectId,
-        }),
-        withCredentials: true,
-      })
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/faculty/getprojectdescription`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            projectid: projectId,
+          }),
+          withCredentials: true,
+        }
+      )
         .then((res) => res.json())
         .then((data) => {
           //document.getElementById("project_title").value = data.project_title;
@@ -155,20 +158,23 @@ function ProfileForm(props) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (projectId === "new") {
       try {
-        const response: any = await fetch("/api/faculty/createproject", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          witthCredentials: true,
-          body: JSON.stringify({
-            ...values,
-            date: values.date.toDateString(),
-            tags: selectedItems,
-            description: description,
-            gpsrn: props.user.id,
-          }),
-        });
+        const response: any = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/faculty/createproject`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            witthCredentials: true,
+            body: JSON.stringify({
+              ...values,
+              date: values.date.toDateString(),
+              tags: selectedItems,
+              description: description,
+              gpsrn: props.user.id,
+            }),
+          }
+        );
         if (response.status === 200) {
           toast("Project added successfully");
           router.push("/faculty");
@@ -181,21 +187,24 @@ function ProfileForm(props) {
       }
     } else {
       try {
-        const response: any = await fetch("/api/faculty/editproject", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          witthCredentials: true,
-          body: JSON.stringify({
-            ...values,
-            date: values.date.toDateString(),
-            tags: selectedItems,
-            description: description,
-            projectid: projectId,
-            gpsrn: props.user.id,
-          }),
-        });
+        const response: any = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/faculty/editproject`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            witthCredentials: true,
+            body: JSON.stringify({
+              ...values,
+              date: values.date.toDateString(),
+              tags: selectedItems,
+              description: description,
+              projectid: projectId,
+              gpsrn: props.user.id,
+            }),
+          }
+        );
         if (response.status === 200) {
           toast("Project Updated Successfully");
           router.push("/faculty");

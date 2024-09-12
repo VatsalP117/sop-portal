@@ -130,17 +130,20 @@ export const columns: ColumnDef<Application>[] = [
               <Button
                 size="sm"
                 onClick={async () => {
-                  fetch(`/api/faculty/acceptstudent`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      projectid: projectId,
-                      studentid: studentId,
-                    }),
-                    withCredentials: true,
-                  }).then((response) => {
+                  fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/faculty/acceptstudent`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        projectid: projectId,
+                        studentid: studentId,
+                      }),
+                      withCredentials: true,
+                    }
+                  ).then((response) => {
                     if (response.status === 200) {
                       window.location.reload();
                     } else {
@@ -154,17 +157,20 @@ export const columns: ColumnDef<Application>[] = [
               <Button
                 size="sm"
                 onClick={() => {
-                  fetch(`/api/faculty/rejectstudent`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      projectid: projectId,
-                      studentid: studentId,
-                    }),
-                    withCredentials: true,
-                  }).then((response) => {
+                  fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/faculty/rejectstudent`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        projectid: projectId,
+                        studentid: studentId,
+                      }),
+                      withCredentials: true,
+                    }
+                  ).then((response) => {
                     if (response.status === 200) {
                       window.location.reload();
                     } else {
