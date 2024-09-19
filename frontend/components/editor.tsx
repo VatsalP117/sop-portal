@@ -1,4 +1,3 @@
-
 import "@blocknote/core/fonts/inter.css";
 import {
   BlockNoteView,
@@ -11,6 +10,7 @@ import "@blocknote/react/style.css";
 import { Block, BlockNoteEditor } from "@blocknote/core";
 import { useEditor } from "@tiptap/react";
 import { useTheme } from "next-themes";
+import { useEffect } from "react";
 export default function Editor(props) {
   const theme = useTheme();
 
@@ -23,7 +23,9 @@ export default function Editor(props) {
   const editor: BlockNoteEditor = useCreateBlockNote({
     initialContent: props.initial,
   });
-
+  useEffect(() => {
+    console.log(editor);
+  }, []);
   // Renders the editor instance using a React component.
   return (
     <BlockNoteView

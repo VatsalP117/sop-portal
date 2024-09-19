@@ -432,7 +432,7 @@ function ProfileForm(props) {
             <Editor
               editable={true}
               setDescription={setDescription}
-              // initial={initial?.description}
+              initial={initial?.description}
             />
           )}
           <Button type="submit">Submit</Button>
