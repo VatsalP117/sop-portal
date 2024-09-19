@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
+import Back from "@/components/back";
 import {
   Form,
   FormControl,
@@ -116,6 +117,7 @@ export default function ProfileForm(props) {
   });
   return (
     <div className="container pt-12 flex flex-col">
+      <Back />
       <h1 className="text-5xl font-bold mb-8">Project Details</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -153,7 +155,7 @@ export default function ProfileForm(props) {
               name="date"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date</FormLabel>
+                  <FormLabel>Start Date</FormLabel>
                   <FormControl>
                     <Input {...field} value={projectDetails.date} />
                   </FormControl>
@@ -254,6 +256,7 @@ export default function ProfileForm(props) {
                     <SelectItem value="SOP">SOP</SelectItem>
                     <SelectItem value="DOP">DOP</SelectItem>
                     <SelectItem value="LOP">LOP</SelectItem>
+                    <SelectItem value="SAT">SAT</SelectItem>
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectGroup>
                 </SelectContent>

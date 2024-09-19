@@ -14,12 +14,28 @@ router.get(
   }
 );
 
-router.get("/logout", (req, res) => {
-  req.logout({}, (err) => {
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
     if (err) {
-      return res.status(500).json({ message: "Could not log out user" });
+      console.error("Logout error:", err);
+      return res
+        .status(500)
+        .json({ message: "Could not log out user", error: err.message });
     }
-    return res.redirect(`${process.env.CLIENT_URL}/login`);
+    req.session.destroy((destroyErr) => {
+      if (destroyErr) {
+        console.error("Session destruction error:", destroyErr);
+        return res.status(500).json({
+          message: "Error destroying session",
+          error: destroyErr.message,
+        });
+      }
+      res.clearCookie("connect.sid"); // Clear the session cookie
+      console.log("Logged out user");
+      res
+        .status(200)
+        .json({ message: "Logout successful", redirectUrl: "/login" });
+    });
   });
 });
 

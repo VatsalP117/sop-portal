@@ -42,7 +42,7 @@ const getProjects = async (req, res) => {
         },
       ],
     });
-    if (!user || !user.users_type.match(/Professor/i)) {
+    if (!user || user.users_type !== "Faculty") {
       return res.status(404).json({ message: "Faculty not found" });
     }
     const new_projects = user.projects.map((project) => ({
@@ -108,7 +108,7 @@ const createProject = async (req, res) => {
     } = req.body;
     const faculty = await User.findByPk(req.user.id);
 
-    if (!faculty || !faculty.users_type.match(/Professor/i)) {
+    if (!faculty || faculty.users_type !== "Faculty") {
       return res.status(404).send("Faculty not found");
     }
     const new_project = await Project.create({
@@ -174,7 +174,9 @@ const getProjectApplicants = async (req, res) => {
           through: { attributes: ["status"] },
           //where clause with multiple conditions user_type can be fdstudent or hdstudent or phdstudent
           where: {
-            users_type: { [Op.or]: ["fdstudent", "hdstudent", "phdstudent"] },
+            users_type: {
+              [Op.or]: ["fdstudent", "hdstudent", "phdstudent", "student"],
+            },
           },
         },
       ],

@@ -4,7 +4,7 @@ import { DataTable } from "./data-table";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-
+import domains from "../../utils/domains";
 import {
   Dialog,
   DialogContent,
@@ -32,36 +32,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "../ui/checkbox";
-const frameworks = [
-  {
-    value: "All Tags",
-    label: "All Tags",
-  },
-  {
-    value: "Software Development",
-    label: "Software Development",
-  },
-  {
-    value: "Systems",
-    label: "Systems",
-  },
-  {
-    value: "IOT",
-    label: "IOT",
-  },
-  {
-    value: "Machine Learning",
-    label: "Machine Learning",
-  },
-  {
-    value: "Artificial Intelligence",
-    label: "Artifical Intelligence",
-  },
-  {
-    value: "Miscellaneous",
-    label: "Miscellaneous",
-  },
-];
+const frameworks = domains.map((framework) => ({
+  value: framework,
+  label: framework,
+}));
 function isOpen(project: Project) {
   let i = 0;
   while (i < project.tags.length) {
@@ -79,7 +53,6 @@ function filterData(
   tag: any,
   onlyOpen: any
 ) {
-  //console.log(data, ogData, tag);
   if (tag === "All Tags") {
     setData(ogData);
     return;
@@ -87,24 +60,12 @@ function filterData(
   let i = 0;
   const newData = ogData.filter((pro: any) => {
     for (const t of pro.tags) {
-      //console.log(t);
       if (t === tag && (!onlyOpen || pro.status === "Open")) return true;
     }
     return false;
   });
-
-  // console.log(newData);
   setData(newData);
 }
-const allTags = [
-  "Software Development",
-  "Systems",
-  "IOT",
-  "Machine Learning",
-  "Artifical Intelligence",
-  "Misc",
-];
-
 async function getData(setData: any): Promise<Boolean> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/student/getallprojects`,
@@ -154,7 +115,7 @@ export default function Comp() {
             setData(newData);
           }}
         >
-          Open Projects Only
+          Show Open Projects
         </Button>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
@@ -164,16 +125,13 @@ export default function Comp() {
               aria-expanded={open}
               className="w-[200px] justify-between"
             >
-              {value
-                ? frameworks.find((framework) => framework.value === value)
-                    ?.label
-                : "Filter by tag..."}
+              Filter by Domains
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0">
+          <PopoverContent className="w-[80vw] p-8">
             <Command>
-              <CommandInput placeholder="Search tag..." />
+              <CommandInput placeholder="Search Domains" />
               <CommandEmpty>No tag found.</CommandEmpty>
               <CommandList>
                 {frameworks.map((framework) => (

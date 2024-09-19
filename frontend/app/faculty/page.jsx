@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Logout from "@/components/logout";
 import Link from "next/link";
 import Comp2 from "@/components/test-faculty/comp";
 
@@ -40,6 +41,7 @@ const Faculty = (props) => {
             <CardDescription className="font-bold">
               {props.user.email}
             </CardDescription>
+            <Logout />
           </CardHeader>
         </Card>
 

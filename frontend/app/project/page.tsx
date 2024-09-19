@@ -6,6 +6,7 @@ import { z } from "zod";
 import { format, min } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -50,6 +51,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import withAuth from "@/app/withAuth";
 import { useRouter } from "next/navigation";
+import domains from "../../utils/domains";
+import Back from "@/components/back";
+const frameworks = domains.map((framework) => ({
+  key: framework,
+  value: framework,
+}));
 const statuses = [
   { label: "Open", value: "Open" },
   { label: "Closed", value: "Closed" },
@@ -67,20 +74,20 @@ const formSchema = z.object({
   }),
   // tags: z.array(z.string()),
   status: z.string({ required_error: "A status is required." }),
-  date: z.date({
-    required_error: "A date is required.",
-  }),
+  date: z
+    .date({
+      required_error: "A date is required.",
+    })
+    .min(new Date(), "Date must be in the future"),
   minStudents: z.number().min(1, {
     message: "Minimum students must be at least 1",
   }),
   maxStudents: z.number().min(1, {
     message: "Maximum students must be at least 1",
   }),
-  // gpsrn: z.string(),
 });
-
+const values: ISelectProps["values"][0][] = frameworks;
 function ProfileForm(props) {
-  console.log(props);
   const searchParams = useSearchParams();
   const projectId = searchParams.get("projectId");
   const [gpsrn, setgpsrn] = useState("");
@@ -88,6 +95,11 @@ function ProfileForm(props) {
   const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [description, setDescription] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredValues = values.filter((value) =>
+    value.value.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   useEffect(() => {
     if (projectId !== "new") {
       fetch(
@@ -105,7 +117,6 @@ function ProfileForm(props) {
       )
         .then((res) => res.json())
         .then((data) => {
-          //document.getElementById("project_title").value = data.project_title;
           form.reset({
             project_title: data.project_title,
             status: data.status,
@@ -141,14 +152,6 @@ function ProfileForm(props) {
   const isOptionSelected = (value: string): boolean => {
     return selectedItems.includes(value) ? true : false;
   };
-  const values: ISelectProps["values"][0][] = [
-    { key: "Software Development", value: "Software Development" },
-    { key: "Machine Learning", value: "Machine Learning" },
-    { key: "Systems", value: "Systems" },
-    { key: "IOT", value: "IOT" },
-    { key: "Artificial Intelligence", value: "Artificial Intelligence" },
-    { key: "Miscellaneous", value: "Miscellaneous" },
-  ];
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -219,6 +222,7 @@ function ProfileForm(props) {
   }
   return (
     <div className="container pt-12 flex flex-col">
+      <Back />
       <h1 className="text-5xl font-bold mb-8">Project Details</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -302,7 +306,7 @@ function ProfileForm(props) {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Date</FormLabel>
+                  <FormLabel>Start Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -383,32 +387,40 @@ function ProfileForm(props) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex gap-2 font-bold">
-                  <span>Select Tags</span>
+                  <span>Select Domains</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-56"
+                className="w-[50vw] max-h-96 overflow-y-auto m-12"
                 onCloseAutoFocus={(e) => e.preventDefault()}
               >
-                <DropdownMenuLabel>Tags</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {values.map(
-                  (value: ISelectProps["values"][0], index: number) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        onSelect={(e) => e.preventDefault()}
-                        key={index}
-                        checked={isOptionSelected(value.key)}
-                        onCheckedChange={() => handleSelectChange(value.key)}
-                      >
-                        {value.value}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  }
-                )}
+                <div className="px-2 py-2">
+                  <div className="relative">
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search Domains..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-8"
+                      onKeyDown={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+                {filteredValues.map((value, index) => (
+                  <DropdownMenuCheckboxItem
+                    key={index}
+                    onSelect={(e) => e.preventDefault()}
+                    checked={isOptionSelected(value.key)}
+                    onCheckedChange={() => handleSelectChange(value.key)}
+                  >
+                    {value.value}
+                  </DropdownMenuCheckboxItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 flex-wrap">
               {selectedItems.map((item) => (
                 <Badge>{item}</Badge>
               ))}

@@ -35,7 +35,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import withAuth from "@/app/withAuth";
-
+import Logout from "@/components/logout";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -74,6 +74,7 @@ const Student = (props) => {
               <CardDescription className="font-bold">
                 {props.user.email}
               </CardDescription>
+              <Logout />
             </CardHeader>
           </Card>
         </div>
@@ -81,7 +82,7 @@ const Student = (props) => {
           <CardHeader>
             <CardTitle>Projects Applied</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-4">
+          <CardContent className="flex flex-col gap-4 overflow-y-auto max-h-96">
             {studentDetails.map((project) => {
               const variant =
                 project.status === "Accepted"
